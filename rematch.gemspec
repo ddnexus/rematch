@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors     = ['Domizio Demichelis']
   s.email       = ['dd.nexus@gmail.com']
   s.summary     = 'Rematch expected values with automatically stored values in tests'
-  s.description = 'With rematch you can completely declutter your test files from hardcoded expected data and update them automatically in a few seconds instead of hours when your code changes'
+  s.description = 'Declutter your test files from hardcoded expected data and when your code changes, update them in a few seconds instead of hours'
   s.homepage    = 'https://github.com/ddnexus/rematch'
   s.license     = 'MIT'
   s.files       = File.read('rematch.manifest').split
