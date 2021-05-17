@@ -1,0 +1,74 @@
+name: Rematch CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+jobs:
+
+  should_run:
+    name: Run or skip?
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@master
+        with:
+          # All of these options are optional, so you can remove them if you are happy with the defaults
+          concurrent_skipping: 'never'
+          skip_after_successful_duplicate: 'true'
+          paths_ignore: '["**/README.md", "**/docs/**"]'
+          do_not_skip: '["pull_request", "workflow_dispatch", "schedule"]'
+
+  ruby_test:
+    needs: should_run
+    if: ${{ needs.should_run.outputs.should_skip != 'true' }}
+    name: Ruby ${{ matrix.ruby-version }} Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - ruby-version: 2.5
+            env:
+              placeholder: true
+          - ruby-version: 2.6
+            env:
+              placeholder: true
+          - ruby-version: 2.7
+            env:
+              placeholder: true
+          - ruby-version: 3.0
+            env:
+              CODECOV: true
+              CHECK_MANIFEST: true
+      fail-fast: false
+    env: ${{ matrix.env }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+      - name: Run Ruby Tests
+        run: bundle exec rake test
+
+      - name: Run Rubocop
+        run: bundle exec rubocop --format github
+
+      - name: Run Codecov
+        if: ${{ env.CODECOV == 'true' }}
+        uses: codecov/codecov-action@v1.3.2
+        with:
+          fail_ci_if_error: true
+
+      - name: Check gem manifest
+        if: ${{ env.CHECK_MANIFEST == 'true' }}
+        run: bundle exec rake manifest:check
