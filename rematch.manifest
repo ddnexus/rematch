@@ -1,4 +1,3 @@
 lib/minitest/rematch_plugin.rb
 lib/rematch.rb
-lib/rematch/tasks.rb
 LICENSE.txt
