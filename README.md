@@ -8,7 +8,7 @@
 
 ## Overview
 
-Declutter your test files from large hardcoded data and update them automatically when your code changes.
+**Declutter your test files from large hardcoded data and update them automatically when your code changes.**
 
 Instead of copying and pasting large outputs or big ruby structures into all the affected test files every time your code change, you can do it the easy way, possibly saving many hours of boring maintenance work!
 
@@ -104,7 +104,7 @@ end
 
 ### How does it work?
 
-The first time a new rematch test is run, its returned value is recorded in a `*.rematch` `YAML::Store` file. The next times the same test will run, its fresh returned value will be rematched against the recorded value, passing or failing the test exactly as it does with hardcoded expected values.
+The first time a new rematch test is run, its returned value is recorded in a `*.rematch` `YAML::Store` file. The next times the same test will run, its fresh returned value will be rematched against the recorded value, passing or failing the test as usual.
 
 ### Refresh the stored values
 
@@ -115,9 +115,9 @@ rake test TESTOPTS=--rematch-refresh-only
 ruby -Ilib:test test/my_test.rb --rematch-refresh-only
 ```
 
-:warning: **WARNING** :warning: As the name tries to suggest, the `--rematch-refresh-only` option runs the rematch tests as `refresh-only` and does not actually run any real comparison. You should re-run the tests without the option in order to verify that they actually pass.
+:warning: **WARNING** :warning: As the name tries to suggest, the `--rematch-refresh-only` option runs the rematch tests in `refresh-only` mode, which does not actually run any real comparison. You should re-run the tests _without the option_ in order to verify that they actually pass.
 
-Alternatively, you can just manually delete the specific store files that you want to refresh (e.g. `frontend_test.rb.rematch`) and rerun the tests.
+Alternatively, you can just manually delete the specific store files that you want to refresh (e.g. `frontend_test.rb.rematch`), run the tests to refresh and re-run to verify.
 
 ### Assertions and Expectations
 
