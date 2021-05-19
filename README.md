@@ -8,81 +8,131 @@
 
 ## Overview
 
-Declutter your test files from hardcoded expected data and when your code changes, update them in a few seconds instead of hours!
+Declutter your test files from large hardcoded data and update them automatically when your code changes.
 
-Instead of copying and pasting large outputs or big ruby structures into all the affected test files every time your code change, you just reset `rematch` and run the tests again. The new values from your code will get stored and used as expected values for the next text runs.
+Instead of copying and pasting large outputs or big ruby structures into all the affected test files every time your code change, you can do it the easy way, possibly saving many hours of boring maintenance work!
 
-## Usage
-
-Currently rematch works as a `minitest` plugin. Just add it to your `Gemfile` (usually in the `:test` group) or, if you don't use it, just `require 'rematch'` in your code.
-
-Then, instead of this kind of mess:
+### Instead of maintaining this cluttered mess...
 
 ```ruby
-it 'generates this big output' do
-_(MyHelper.my_output).must_equal "<... 300 lines of HTML ...
-............................................................
-............................................................
-............................................................"
+it 'generates the pagination nav tag' do
+  _(view.pagy_nav(pagy)).must_equal "<nav id="test-nav-id" class="pagy-nav
+  pagination" aria-label="pager"><span class="page prev"><a href="/foo?page=9"  link-extra
+  rel="prev" aria-label="previous">&lsaquo;&nbsp;Prev</a></span> <span class="page"><a
+  href="/foo?page=1"  link-extra >1</a></span> <span class="page gap">&hellip;</span>
+  <span class="page"><a href="/foo?page=6"  link-extra >6</a></span> <span class="page"><a
+  href="/foo?page=7"  link-extra >7</a></span> <span class="page"><a href="/foo?page=8"  link-extra
+  >8</a></span> <span class="page"><a href="/foo?page=9"  link-extra rel="prev" >9</a></span>
+  <span class="page active">10</span> <span class="page"><a href="/foo?page=11"  link-extra
+  rel="next" >11</a></span> <span class="page"><a href="/foo?page=12"  link-extra
+  >12</a></span> <span class="page"><a href="/foo?page=13"  link-extra >13</a></span>
+  <span class="page"><a href="/foo?page=14"  link-extra >14</a></span> <span class="page
+  gap">&hellip;</span> <span class="page"><a href="/foo?page=50"  link-extra >50</a></span>
+  <span class="page next"><a href="/foo?page=11"  link-extra rel="next" aria-label="next">Next&nbsp;&rsaquo;</a></span></nav>"
 end
-it 'generate this big structure' do
-_(MyAPI.my_output).must_equal [
-  { a: { big: { structure: 'with many',
-                different: ['values', 'and', 'stuff'] 
-              }
-       },
-    and: 'hundreds',
-    of: 'levels',
-  },
-  ..............
-  ..............
-  ..............
-  ..............       
-]
+
+it 'generates the metadata hash' do
+  _(controller.pagy_metadata).must_equal( 
+    {
+    :scaffold_url=>"http://www.example.com/subdir?page=__pagy_page__",
+    :first_url=>"http://www.example.com/subdir?page=1",
+    :prev_url=>"http://www.example.com/subdir?page=",
+    :page_url=>"http://www.example.com/subdir?page=1",
+    :next_url=>"http://www.example.com/subdir?page=2",
+    :last_url=>"http://www.example.com/subdir?page=50",
+    :count=>1000,
+    :page=>1,
+    :items=>20,
+    :vars=>
+     {:page=>1,
+      :items=>20,
+      :outset=>0,
+      :size=>[1, 4, 4, 1],
+      :page_param=>:page,
+      :params=>{},
+      :fragment=>"",
+      :link_extra=>"",
+      :i18n_key=>"pagy.item_name",
+      :cycle=>false,
+      :url=>"http://www.example.com/subdir",
+      :headers=>
+       {:page=>"Current-Page",
+        :items=>"Page-Items",
+        :count=>"Total-Count",
+        :pages=>"Total-Pages"},
+      :metadata=>
+       [:scaffold_url,
+        :first_url,
+        :prev_url,
+        :page_url,
+        :next_url,
+        :last_url,
+        :count,
+        :page,
+        :items,
+        :vars,
+        :pages,
+        :last,
+        :from,
+        :to,
+        :prev,
+        :next,
+        :series],
+      :count=>1000},
+    :pages=>50,
+    :last=>50,
+    :from=>1,
+    :to=>20,
+    :prev=>nil,
+    :next=>2,
+    :series=>["1", 2, 3, 4, 5, :gap, 50]
+    } 
+  )
 end
 ```
 
-...you can just write:
+### Do it the easy way!
 
 ```ruby
-it 'generates this big output' do
-_(MyHelper.my_output).must_rematch
+it 'generates the pagination nav tag' do
+  _(view.pagy_nav(pagy)).must_rematch
 end
-it 'generate this big structure' do
-_(MyAPI.my_output).must_rematch
+it 'generates the metadata hash' do
+  _(controller.pagy_metadata).must_rematch
 end
 ```
 
-Rematch uses `YAML::Store` to store and rematch the result of your tests.
+### How does it work?
 
-The first time a new rematch test is run it records its returned value. The next times the same test is run, it will rematch its fresh returned value against the recorded value. Obviously, the test will fail if the values don't match.
+The first time a new rematch test is run, its returned value is recorded in a `*.rematch` `YAML::Store` file. The next times the same test will run, its fresh returned value will be rematched against the recorded value, passing or failing the test exactly as it does with hardcoded expected values.
 
-### Update
+### Refresh the stored values
 
-Rematch creates a `*.rematch` store file for each test file that uses it. When you need to update the store to the new values you have a few choices:
+When your code change you can run the tests with the `--rematch-refresh-only` option in order to refresh the stored values with the new values from your current code. For example:
 
-- Just delete the specific store file that you want to update (e.g. `frontend_test.rb.rematch`) and rerun the test
-- Or run the [rematch:reset task](#rematchreset) to delete all the store files of your test suite and rerun all the tests
-- In theory you could also search the entry in the store file and remove/edit it, but that's not practical nor recommended, but it could be OK if you want to force the failure of a test.
+```sh
+rake test TESTOPTS=--rematch-refresh-only
+ruby -Ilib:test test/my_test.rb --rematch-refresh-only
+```
 
-### Assertions/expectations
+:warning: **WARNING** :warning: As the name tries to suggest, the `--rematch-refresh-only` option runs the rematch tests as `refresh-only` and does not actually run any real comparison. You should re-run the tests without the option in order to verify that they actually pass.
 
-Rematch adds `assert_rematch` and `must_rematch` to the `minitest` assertions and expectations.
+Alternatively, you can just manually delete the specific store files that you want to refresh (e.g. `frontend_test.rb.rematch`) and rerun the tests.
 
-That uses `assert_equal` and `must_equal` behind the scene after storing/retrieving the value to match.
+### Assertions and Expectations
 
-### rematch:reset
+Rematch adds `assert_rematch` and `must_rematch` to `minitest`. That uses `assert_equal`/`must_equal` behind the scene after storing/retrieving the value to compare.
 
-Run `rake rematch:reset` to delete all the `*.rematch` store files below the current dir.
+## Installation
 
-Run `rake rematch:reset tree=path/to/test` to delete all the `*.rematch` store files below the `path/to/test` dir.
+Rematch works as a `minitest` plugin, so just add it to your `Gemfile` (usually in the `:test` group) or require it if you don't use `bundler`, and minitest will find and load it.
 
-The store files will get recreated the next time you will run the tests.
+After that you can just use its assertions/expectations in your tests.
 
 ## Caveats
 
-- You can use rematch with pretty much everything, even your own complex objects, however, since rematch works by comparing values, the stored values have to implement a `==` method (like any other native ruby object does)
-- If you edit the test file, (e.g. inserting rematch tests in the file or changing method names or description) the test location/id will change, so rematch will save a new entry, leaving the old entry orphaned. That will not affect testing, however if you want to keep it tidy, you can [update](#update) the affected store files.
+- You can use `rematch` with pretty much any value, even your own complex objects and even without serialization, however since they get compared by minitest, they must implement a `==` method like any other native ruby object.
+- Editing an existing test file containing rematch tests may orphan some entry in the store file. That will not affect your test results, however you can [refresh the stored values](#refresh-the-stored-values) if you want to keep it tidy.
 
 ## Repository Info
 

@@ -1,16 +1,30 @@
 # frozen_string_literal: true
 
 require 'yaml/store'
-require 'rematch/tasks'
+require 'fileutils'
 
 # Implement the key/value store
 class Rematch
-  VERSION = '0.0.1'
+  VERSION = '1.0'
   EXT     = '.rematch'
+
+  @refreshed = []
+  class << self
+    attr_accessor :refresh
+
+    def check_refresh(path)
+      return unless @refresh && !@refreshed.include?(path)
+      FileUtils.rm_f(path)
+      @refreshed << path
+      puts "Refresh #{path}"
+    end
+  end
 
   # path and unique id of the test being run
   def initialize(path:, id:)
-    @store = YAML::Store.new("#{path}#{EXT}", true)
+    path = "#{path}#{EXT}"
+    self.class.check_refresh(path)
+    @store = YAML::Store.new(path, true)
     @id    = id
     @count = 0
   end
