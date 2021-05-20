@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.version     = Rematch::VERSION
   s.authors     = ['Domizio Demichelis']
   s.email       = ['dd.nexus@gmail.com']
-  s.summary     = 'Rematch expected test values with automatically stored values'
-  s.description = 'Declutter your test files from large hardcoded data and update them automatically when your code changes'
+  s.summary     = 'Declutter your test files from large hardcoded data and update them automatically when your code changes'
+  s.description = 'Instead of copying and pasting large outputs or big ruby structures into all the affected test files every time your code change, you can do it the easy way, possibly saving many hours of boring maintenance work!'
   s.homepage    = 'https://github.com/ddnexus/rematch'
   s.license     = 'MIT'
   s.files       = File.read('rematch.manifest').split

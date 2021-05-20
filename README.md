@@ -104,24 +104,50 @@ end
 
 ### How does it work?
 
-The first time a new rematch test is run, its returned value is recorded in a `*.rematch` `YAML::Store` file. The next times the same test will run, its fresh returned value will be rematched against the recorded value, passing or failing the test as usual.
+The first time a new rematch test is run, its returned value is recorded in a `*.rematch` `YAML::Store` file (placed next to the test file). The next times the same test will run, its fresh returned value will be rematched against the recorded value, passing or failing the test as usual.
 
 ### Refresh the stored values
 
-When your code change you can run the tests with the `--rematch-refresh-only` option in order to refresh the stored values with the new values from your current code. For example:
+When your code change you have a couple of options:
 
-```sh
-rake test TESTOPTS=--rematch-refresh-only
-ruby -Ilib:test test/my_test.rb --rematch-refresh-only
-```
+- You can just manually delete the specific store files that you want to refresh (e.g. `frontend_test.rb.rematch`). Then you run the test(s) so their stored values will get refreshed with the new values from your current code
+- Or you can run the test(s) (all, a few or one) with the `--rematch-refresh-only` option, so the stored values _of the test that actually run with the option_ will get refreshed with the new values from your current code. For example:
 
-:warning: **WARNING** :warning: As the name tries to suggest, the `--rematch-refresh-only` option runs the rematch tests in `refresh-only` mode, which does not actually run any real comparison. You should re-run the tests _without the option_ in order to verify that they actually pass.
+    ```sh
+    rake test TESTOPTS=--rematch-refresh-only                # refresh all tests
+    ruby -Ilib:test test/my_test.rb --rematch-refresh-only   # refresh just one
+    ```
 
-Alternatively, you can just manually delete the specific store files that you want to refresh (e.g. `frontend_test.rb.rematch`), run the tests to refresh and re-run to verify.
+:warning: **WARNING** :warning: As the name tries to suggest, the `--rematch-refresh-only` option runs the rematch tests in `refresh-only` mode, which does not actually run any real comparison. You should always run the tests _without the option_ in order to verify that they actually pass.
 
 ### Assertions and Expectations
 
 Rematch adds `assert_rematch` and `must_rematch` to `minitest`. That uses `assert_equal`/`must_equal` behind the scene after storing/retrieving the value to compare.
+
+### Suggestions
+
+#### Check the stores
+
+Rematch stores the expected value for you: whatever is coming out of your expression is what will get stored and compared the next times. That is handy when you know that your code is working properly. If you are not so sure, you should check the stored values by taking a look at the `.rematch` store file, which is a very readable `YAML` file.
+
+#### Dos and don'ts
+
+- Use `rematch` with large output or structures that are mostly generated outside your test code. For example, if you have `big_helper` producing a large chunk of output with just a few params from the test, hard-coding that would not be more readable, so instead of using a `must_equal "... big output ...", you can just do:
+
+    ```ruby
+    _(view.big_helper(a: 'a')).must_rematch
+    ```
+
+- Don't use `rematch` for short specific outputs mostly dependent on the test code. For example the following is a lot more readable than using rematch just to store `10`:
+
+    ```ruby
+    _(square_root(10 * 10)).must_equal 10
+    ```
+
+#### Test the whole instead of parts
+
+- Without `rematch` we needed to extract the relevant parts out of a big output or structure. That implies deciding what is relevant and what is not, and writing code to extract the parts to test, and code to write one test for each part.
+- With rematch storing the whole structure is a lot easier and effective: no decisions to make, no risk to miss something relevant, no code to write to select, one single deadly-simple line to write! Done!
 
 ## Installation
 
