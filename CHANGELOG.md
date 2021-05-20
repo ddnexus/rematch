@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## Version 1.1.0
+
+### Changes
+
+- Renamed --rematch-refresh-only to --rematch-rebuild
+- Added equality argument
+- Improved code, tests and documentation
+
+### Commits
+
+- [80fc503](http://github.com/ddnexus/pagy/commit/80fc503): added equality argument
+- [a325562](http://github.com/ddnexus/pagy/commit/a325562): simplified naming of option: --rematch-refresh-only to --rematch-rebuild; updated README and tests
+- [187e9ab](http://github.com/ddnexus/pagy/commit/187e9ab): improved README and gmspec description
+- [ff273fc](http://github.com/ddnexus/pagy/commit/ff273fc): added gemspec to the Gemfile
+- [01d3f38](http://github.com/ddnexus/pagy/commit/01d3f38): Minor README improvements
+
 ## Version 1.0
 
 ### Changes
