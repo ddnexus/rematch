@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'minitest'
+gem 'minitest-unordered'
 gem 'rake'
 gem 'rake-manifest'
 

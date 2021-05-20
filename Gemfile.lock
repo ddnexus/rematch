@@ -11,6 +11,7 @@ GEM
       simplecov (>= 0.15, < 0.22)
     docile (1.4.0)
     minitest (5.14.4)
+    minitest-unordered (1.0.2)
     parallel (1.20.1)
     parser (3.0.1.1)
       ast (~> 2.4.1)
@@ -54,6 +55,7 @@ PLATFORMS
 DEPENDENCIES
   codecov
   minitest
+  minitest-unordered
   rake
   rake-manifest
   rematch!

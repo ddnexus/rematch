@@ -123,7 +123,13 @@ You have a couple of options to do that:
 
 ### Assertions and Expectations
 
-Rematch adds `assert_rematch` and `must_rematch` to `minitest`. That uses `assert_equal`/`must_equal` behind the scene after storing/retrieving the value to compare.
+Rematch adds `assert_rematch` and `must_rematch` to `minitest`. By default, it uses `assert_equal`/`must_equal` behind the scene after storing/retrieving the value to compare.
+
+However you can use any other equality assertion that better suits your needs. Here is an example with `must_equal_unordered` (provided by `minitest-unordered` plugin):
+
+```ruby
+_(my_enum_collection).must_rematch :equal_unordered
+```
 
 ### Suggestions
 

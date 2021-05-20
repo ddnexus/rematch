@@ -1,0 +1,6 @@
+---
+"[1] rematch/equality#test_0001_rematches upcase equality": MIXED_case
+"[1] rematch/equality#test_0002_rematches equal-unordered plugin":
+- 2
+- 1
+- 3
