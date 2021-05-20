@@ -5,8 +5,8 @@ require 'rematch'
 # Implement the minitest plugin
 module Minitest
   def self.plugin_rematch_options(opts, _options)
-    opts.on '--rematch-refresh-only', 'ONLY Refresh the stored values with the current values' do
-      Rematch.refresh = true
+    opts.on '--rematch-rebuild', 'Rebuild the stores with the current entries/values' do
+      Rematch.rebuild = true
     end
   end
   class Test
@@ -16,8 +16,8 @@ module Minitest
     end
   end
   module Assertions
-    def assert_rematch(_expected, actual)
-      assert_equal(@rematch.rematch(actual), actual)
+    def assert_rematch(equality, actual)
+      send :"assert_#{equality||:equal}", @rematch.rematch(actual), actual
     end
   end
   module Expectations

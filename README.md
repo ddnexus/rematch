@@ -106,23 +106,30 @@ end
 
 The first time a new rematch test is run, its returned value is recorded in a `*.rematch` `YAML::Store` file (placed next to the test file). The next times the same test will run, its fresh returned value will be rematched against the recorded value, passing or failing the test as usual.
 
-### Refresh the stored values
+### Update the stored values
 
-When your code change you have a couple of options:
+When your code change you need to update the stored values with the new values from your current code. That is done by deleting the store files and re-running the test.
 
-- You can just manually delete the specific store files that you want to refresh (e.g. `frontend_test.rb.rematch`). Then you run the test(s) so their stored values will get refreshed with the new values from your current code
-- Or you can run the test(s) (all, a few or one) with the `--rematch-refresh-only` option, so the stored values _of the test that actually run with the option_ will get refreshed with the new values from your current code. For example:
+You have a couple of options to do that:
 
+- You can manually delete the specific store files (e.g. `frontend_test.rb.rematch`) and re-run the test(s)
+- Or you can run the test(s) with the `--rematch-rebuild` option. For example:
     ```sh
-    rake test TESTOPTS=--rematch-refresh-only                # refresh all tests
-    ruby -Ilib:test test/my_test.rb --rematch-refresh-only   # refresh just one
+    rake test TESTOPTS=--rematch-rebuild                # update all
+    ruby -Ilib:test test/my_test.rb --rematch-rebuild   # update just one
     ```
 
-:warning: **WARNING** :warning: As the name tries to suggest, the `--rematch-refresh-only` option runs the rematch tests in `refresh-only` mode, which does not actually run any real comparison. You should always run the tests _without the option_ in order to verify that they actually pass.
+    :warning: **WARNING**: Don't forget the  `--rematch-rebuild` option in some script that runs for actual testing or it will never fail!
 
 ### Assertions and Expectations
 
-Rematch adds `assert_rematch` and `must_rematch` to `minitest`. That uses `assert_equal`/`must_equal` behind the scene after storing/retrieving the value to compare.
+Rematch adds `assert_rematch` and `must_rematch` to `minitest`. By default, it uses `assert_equal`/`must_equal` behind the scene after storing/retrieving the value to compare.
+
+However you can use any other equality assertion that better suits your needs. Here is an example with `must_equal_unordered` (provided by `minitest-unordered` plugin):
+
+```ruby
+_(my_enum_collection).must_rematch :equal_unordered
+```
 
 ### Suggestions
 
@@ -132,13 +139,14 @@ Rematch stores the expected value for you: whatever is coming out of your expres
 
 #### Dos and don'ts
 
-- Use `rematch` with large output or structures that are mostly generated outside your test code. For example, if you have `big_helper` producing a large chunk of output with just a few params from the test, hard-coding that would not be more readable, so instead of using a `must_equal "... big output ...", you can just do:
+- Use `rematch` with large output or structures that are mostly generated outside your test code. For example, if you have `big_helper` producing a large chunk of output with just a few params from the test, hard-coding that would not be more readable, so instead of using a `must_equal "... big output ..."` or `must_equal { big: {complicated: 'structure', ...`, you can just do:
 
     ```ruby
-    _(view.big_helper(a: 'a')).must_rematch
+    _(big_helper(a: 'a')).must_rematch
+    _(big_struct(b: 'b')).must_rematch
     ```
 
-- Don't use `rematch` for short specific outputs mostly dependent on the test code. For example the following is a lot more readable than using rematch just to store `10`:
+- Don't use `rematch` for short specific outputs mostly dependent on the test code. For example, the following is a lot more readable than using rematch just to store `10`:
 
     ```ruby
     _(square_root(10 * 10)).must_equal 10
@@ -146,8 +154,8 @@ Rematch stores the expected value for you: whatever is coming out of your expres
 
 #### Test the whole instead of parts
 
-- Without `rematch` we needed to extract the relevant parts out of a big output or structure. That implies deciding what is relevant and what is not, and writing code to extract the parts to test, and code to write one test for each part.
-- With rematch storing the whole structure is a lot easier and effective: no decisions to make, no risk to miss something relevant, no code to write to select, one single deadly-simple line to write! Done!
+- Without `rematch` we need to extract the relevant parts out of a big output or structure in order to avoid cluttering the test. That implies deciding which part is relevant and which is not besides writing the code to extract the parts and test each of them.
+- With `rematch` storing the whole structure is a lot easier and effective: no decisions to make, no risk to miss testing something relevant, no code to write to select, one single deadly-simple line to write, no clutter added! Done!
 
 ## Installation
 
@@ -157,8 +165,8 @@ After that you can just use its assertions/expectations in your tests.
 
 ## Caveats
 
-- You can use `rematch` with pretty much any value, even your own complex objects and even without serialization, however since they get compared by minitest, they must implement a `==` method like any other native ruby object.
-- Editing an existing test file containing rematch tests may orphan some entry in the store file. That will not affect your test results, however you can [refresh the stored values](#refresh-the-stored-values) if you want to keep it tidy.
+- You can use `rematch` with any value, even your own complex objects and even without serialization, however since they get compared by minitest, they must implement a `==` method like any other native ruby object.
+- Editing an existing test file containing rematch tests may orphan some entry in the store file. That will not affect your test results, however you can [update the stored values](#update-the-stored-values) if you want to keep it tidy.
 
 ## Repository Info
 
