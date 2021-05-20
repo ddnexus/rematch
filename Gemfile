@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-# gemspec
+gemspec
 
 gem 'minitest'
 gem 'rake'
