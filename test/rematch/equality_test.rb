@@ -13,13 +13,15 @@ module Minitest
 end
 
 describe 'rematch/equality' do
-  it 'rematches upcase equality' do
-    # the store contains 'MIXED_case' instead of 'mixed_CASE' (edit manually if this test fails)
-    _('mixed_CASE').must_rematch :equal_insensitive   # the stored value is 'MIXED_case' instead
+  it 'rematches :assert_equal_insensitive' do
+    # the store contains 'MIXED_case' instead of 'mixed_CASE' (edit manually if rebuilt)
+    _('mixed_CASE').must_rematch :assert_equal_insensitive
+    assert_rematch 'mixed_CASE', :assert_equal_insensitive
   end
-  it 'rematches equal-unordered plugin' do
-    # [1,2,3].must_equal_unordered [2,1,3]
-    # the store contains [2,1,3] instead of [1,2,3] (edit manually if this test fails)
-    _([1,2,3]).must_rematch :equal_unordered   # the stored value is 'MIXED_case' instead
+  it 'rematches :assert_equal_unordered' do
+    # assert_equal_unordered [2,1,3], [1,2,3]
+    # the store contains [2,1,3] instead of [1,2,3] (edit manually if rebuilt)
+    _([1,2,3]).must_rematch :assert_equal_unordered
+    assert_rematch [1,2,3], :assert_equal_unordered
   end
 end

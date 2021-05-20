@@ -16,11 +16,11 @@ module Minitest
     end
   end
   module Assertions
-    def assert_rematch(equality, actual)
-      send :"assert_#{equality||:equal}", @rematch.rematch(actual), actual
+    def assert_rematch(actual, assert_method=:assert_equal)
+      send assert_method, @rematch.rematch(actual), actual
     end
   end
   module Expectations
-    infect_an_assertion :assert_rematch, :must_rematch
+    infect_an_assertion :assert_rematch, :must_rematch, true # dont_flip
   end
 end
