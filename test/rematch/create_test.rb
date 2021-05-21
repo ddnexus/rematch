@@ -7,9 +7,12 @@ describe 'rematch/create' do
   it 'creates the store' do
     File.delete(store_file) if File.file?(store_file)
     _('a new value').must_rematch
-    _(File.file?(store_file)).must_equal true
+    _(store_file).path_must_exist
   end
   it 'creates an entry' do
-    _(YAML.load_file(store_file)).must_equal({ '[1] rematch/create#test_0001_creates the store' => 'a new value' })
+    _(File.read(store_file)).must_equal <<~STORE
+      ---
+      "[1] rematch/create#test_0001_creates the store": a new value
+    STORE
   end
 end

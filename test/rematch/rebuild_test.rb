@@ -9,8 +9,8 @@ describe 'rematch/rebuild' do
     store_path = "#{__FILE__}#{Rematch::EXT}"
     Rematch.check_rebuild(store_path)
     Rematch.rebuild = nil
-    _(File.file?(store_path)).must_equal false
+    _(store_path).path_wont_exist
     _('store_value').must_rematch
-    _(system('ruby -Ilib:test test/rematch/rebuild_option.rb --rematch-rebuild')).must_equal true
+    assert system('ruby -Ilib:test test/rematch/rebuild_option.rb --rematch-rebuild')
   end
 end
