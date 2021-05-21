@@ -132,6 +132,7 @@ However you can use any other _equality assertion_ that better suits your needs.
 ```ruby
 # instead of
 assert_equal_unordered [:big, :expected, :enumerable, :collection, ...], my_enum_collection
+
 # you can rematch it like: 
 assert_rematch my_enum_collection, :assert_equal_unordered
 # or
@@ -148,22 +149,31 @@ Rematch stores the expected value for you: whatever is returned by your test exp
 
 #### Dos and don'ts
 
-- Use `rematch` with large output or structures that are mostly generated outside your test code. For example, if you have a `big_helper` producing a large chunk of output with just a few params from the test, hard-coding that would not be more readable, so instead of using a `must_equal "... big output ..."` or `must_equal { big: {complicated: 'structure', ...`, you can just write:
+- Use `rematch` with large output or structures that are mostly generated outside your test code. Rematch can declutter your tests and [update the stored values](#update-the-stored-values) in seconds. For example:
 
     ```ruby
-    assert_rematch big_helper(a: 'a') 
-    assert_rematch big_struct(b: 'b') 
-    # or
+    # cluttered and hard to update
+    must_equal '...big output spanning multiple lines ...', big_helper(a: 'a')
+    must_equal { big: { deeply: 'nested', complicated: 'structure'}, ...}, big_struct(b: 'b')
+    
+    # this is better
+    assert_rematch big_helper(a: 'a')
+    assert_rematch big_struct(b: 'b')
+    # or this
     big_helper(a: 'a').must_rematch
     big_struct(b: 'b').must_rematch 
     ```
 
-- Don't use `rematch` for short specific outputs mostly dependent on the test code. For example, the following code is a lot more readable than using rematch just to store `10`:
+- Don't use `rematch` for short specific outputs mostly dependent on the test code. For example:
 
     ```ruby
-    assert_equal 10, square_root(10 * 10) 
-    # or
-    square_root(10 * 10).must_equal 10
+    # less readable and harder to update 
+    assert_rematch square_root(100) 
+    square_root(10_000).must_rematch
+    
+    # this is better
+    assert_equal 10, square_root(100) 
+    square_root(10_000).must_equal 100
     ```
 
 #### Test the whole instead of parts
