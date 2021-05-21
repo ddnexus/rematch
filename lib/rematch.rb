@@ -5,14 +5,16 @@ require 'fileutils'
 
 # Implement the key/value store
 class Rematch
-  VERSION = '1.1.0'
+  VERSION = '1.2.0'
   EXT     = '.rematch'
 
   @rebuilt = []
   class << self
     attr_accessor :rebuild
+
     def check_rebuild(path)
       return unless @rebuild && !@rebuilt.include?(path)
+
       FileUtils.rm_f(path)
       @rebuilt << path
       puts "Rebuilt #{path}"

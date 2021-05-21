@@ -10,6 +10,6 @@ describe 'rematch/create' do
     _(File.file?(store_file)).must_equal true
   end
   it 'creates an entry' do
-    _(YAML.load_file(store_file)).must_equal({"[1] rematch/create#test_0001_creates the store"=>"a new value"})
+    _(YAML.load_file(store_file)).must_equal({ '[1] rematch/create#test_0001_creates the store' => 'a new value' })
   end
 end

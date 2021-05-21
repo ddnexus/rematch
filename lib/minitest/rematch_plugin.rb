@@ -9,18 +9,24 @@ module Minitest
       Rematch.rebuild = true
     end
   end
+
+  # reopen the minitest class
   class Test
     def before_setup
       super
       @rematch = Rematch.new(path: method(name).source_location.first, id: location)
     end
   end
+
+  # reopen the minitest module
   module Assertions
-    def assert_rematch(equality, actual)
-      send :"assert_#{equality||:equal}", @rematch.rematch(actual), actual
+    def assert_rematch(actual, assert_method = :assert_equal)
+      send assert_method, @rematch.rematch(actual), actual
     end
   end
+
+  # reopen the minitest module
   module Expectations
-    infect_an_assertion :assert_rematch, :must_rematch
+    infect_an_assertion :assert_rematch, :must_rematch, true # dont_flip
   end
 end

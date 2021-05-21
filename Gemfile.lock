@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rematch (1.1.0)
+    rematch (1.2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -20,7 +20,7 @@ GEM
     rake-manifest (0.2.1)
     regexp_parser (2.1.1)
     rexml (3.2.5)
-    rubocop (1.14.0)
+    rubocop (1.15.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)

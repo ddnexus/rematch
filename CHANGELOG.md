@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## Version 1.2.0
+
+###  Changes
+
+- Refactoring of assertions (improvement and fixes)
+- Strictened Rubocop
+
+### Commits
+
+- [bc799ba](http://github.com/ddnexus/pagy/commit/bc799ba): strictened rubocop
+- [856d0da](http://github.com/ddnexus/pagy/commit/856d0da): refactoring of assertions:
+  - avoid the initial nil in assertions
+  - used dont_flip for expectation and flipped args in assertion
+  - simplified equality/assert_method argument
+  - added assertions in tests and README
+
 ## Version 1.1.0
 
 ### Changes
@@ -28,7 +44,7 @@
 
 ### Commits
 
-- [6c2968d](http://github.com/ddnexus/pagy/commit/6c2968d): General refactoring for version 1.0 [...]
+- [6c2968d](http://github.com/ddnexus/pagy/commit/6c2968d): General refactoring for version 1.0 \[...\]
 - [2224433](http://github.com/ddnexus/pagy/commit/2224433): Doc improvements and fixes
 
 ## Version 0.0.1

@@ -10,7 +10,7 @@ gem 'rake'
 gem 'rake-manifest'
 
 group :test do
-  gem 'codecov', require:  false
+  gem 'codecov', require: false
   gem 'rubocop'
   gem 'rubocop-minitest'
   gem 'rubocop-packaging'

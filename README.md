@@ -16,7 +16,7 @@ Instead of copying and pasting large outputs or big ruby structures into all the
 
 ```ruby
 it 'generates the pagination nav tag' do
-  _(view.pagy_nav(pagy)).must_equal "<nav id="test-nav-id" class="pagy-nav
+  assert_equal "<nav id="test-nav-id" class="pagy-nav
   pagination" aria-label="pager"><span class="page prev"><a href="/foo?page=9"  link-extra
   rel="prev" aria-label="previous">&lsaquo;&nbsp;Prev</a></span> <span class="page"><a
   href="/foo?page=1"  link-extra >1</a></span> <span class="page gap">&hellip;</span>
@@ -28,11 +28,12 @@ it 'generates the pagination nav tag' do
   >12</a></span> <span class="page"><a href="/foo?page=13"  link-extra >13</a></span>
   <span class="page"><a href="/foo?page=14"  link-extra >14</a></span> <span class="page
   gap">&hellip;</span> <span class="page"><a href="/foo?page=50"  link-extra >50</a></span>
-  <span class="page next"><a href="/foo?page=11"  link-extra rel="next" aria-label="next">Next&nbsp;&rsaquo;</a></span></nav>"
+  <span class="page next"><a href="/foo?page=11"  link-extra rel="next" aria-label="next">Next&nbsp;&rsaquo;</a></span></nav>" , 
+  view.pagy_nav(pagy)
 end
 
 it 'generates the metadata hash' do
-  _(controller.pagy_metadata).must_equal( 
+  assert_equal( 
     {
     :scaffold_url=>"http://www.example.com/subdir?page=__pagy_page__",
     :first_url=>"http://www.example.com/subdir?page=1",
@@ -86,8 +87,8 @@ it 'generates the metadata hash' do
     :prev=>nil,
     :next=>2,
     :series=>["1", 2, 3, 4, 5, :gap, 50]
-    } 
-  )
+    }, 
+    controller.pagy_metadata)
 end
 ```
 
@@ -95,10 +96,10 @@ end
 
 ```ruby
 it 'generates the pagination nav tag' do
-  _(view.pagy_nav(pagy)).must_rematch
+  assert_rematch view.pagy_nav(pagy)
 end
 it 'generates the metadata hash' do
-  _(controller.pagy_metadata).must_rematch
+  assert_rematch controller.pagy_metadata
 end
 ```
 
@@ -114,6 +115,7 @@ You have a couple of options to do that:
 
 - You can manually delete the specific store files (e.g. `frontend_test.rb.rematch`) and re-run the test(s)
 - Or you can run the test(s) with the `--rematch-rebuild` option. For example:
+
     ```sh
     rake test TESTOPTS=--rematch-rebuild                # update all
     ruby -Ilib:test test/my_test.rb --rematch-rebuild   # update just one
@@ -123,39 +125,51 @@ You have a couple of options to do that:
 
 ### Assertions and Expectations
 
-Rematch adds `assert_rematch` and `must_rematch` to `minitest`. By default, it uses `assert_equal`/`must_equal` behind the scene after storing/retrieving the value to compare.
+Rematch adds `assert_rematch` and `must_rematch` to `minitest`. By default, it uses `assert_equal` behind the scenes after storing/retrieving the value to compare.
 
-However you can use any other equality assertion that better suits your needs. Here is an example with `must_equal_unordered` (provided by `minitest-unordered` plugin):
+However you can use any other _equality assertion_ that better suits your needs. Here is an example with `assert_equal_unordered` (provided by `minitest-unordered` plugin):
 
 ```ruby
-_(my_enum_collection).must_rematch :equal_unordered
+# instead of
+assert_equal_unordered [:big, :expected, :enumerable, :collection, ...], my_enum_collection
+# you can rematch it like: 
+assert_rematch my_enum_collection, :assert_equal_unordered
+# or
+_(my_enum_collection).must_rematch :assert_equal_unordered
 ```
+
+**Notice**: The symbol passed must identify an **equality assertion** method, i.e. the method must use a form of comparison of the whole stored value, and must be an assertion method like `:assert_something` and not an expectation method like `:must_something`.
 
 ### Suggestions
 
 #### Check the stores
 
-Rematch stores the expected value for you: whatever is coming out of your expression is what will get stored and compared the next times. That is handy when you know that your code is working properly. If you are not so sure, you should check the stored values by taking a look at the `.rematch` store file, which is a very readable `YAML` file.
+Rematch stores the expected value for you: whatever is returned by your test expression is what will get stored and compared the next times. That is handy when you know that your code is working properly. If you are not so sure, you should check the stored values by taking a look at the `.rematch` store file, which is a very readable `YAML` file.
 
 #### Dos and don'ts
 
-- Use `rematch` with large output or structures that are mostly generated outside your test code. For example, if you have `big_helper` producing a large chunk of output with just a few params from the test, hard-coding that would not be more readable, so instead of using a `must_equal "... big output ..."` or `must_equal { big: {complicated: 'structure', ...`, you can just do:
+- Use `rematch` with large output or structures that are mostly generated outside your test code. For example, if you have a `big_helper` producing a large chunk of output with just a few params from the test, hard-coding that would not be more readable, so instead of using a `must_equal "... big output ..."` or `must_equal { big: {complicated: 'structure', ...`, you can just write:
 
     ```ruby
-    _(big_helper(a: 'a')).must_rematch
-    _(big_struct(b: 'b')).must_rematch
+    assert_rematch big_helper(a: 'a') 
+    assert_rematch big_struct(b: 'b') 
+    # or
+    big_helper(a: 'a').must_rematch
+    big_struct(b: 'b').must_rematch 
     ```
 
-- Don't use `rematch` for short specific outputs mostly dependent on the test code. For example, the following is a lot more readable than using rematch just to store `10`:
+- Don't use `rematch` for short specific outputs mostly dependent on the test code. For example, the following code is a lot more readable than using rematch just to store `10`:
 
     ```ruby
-    _(square_root(10 * 10)).must_equal 10
+    assert_equal 10, square_root(10 * 10) 
+    # or
+    square_root(10 * 10).must_equal 10
     ```
 
 #### Test the whole instead of parts
 
-- Without `rematch` we need to extract the relevant parts out of a big output or structure in order to avoid cluttering the test. That implies deciding which part is relevant and which is not besides writing the code to extract the parts and test each of them.
-- With `rematch` storing the whole structure is a lot easier and effective: no decisions to make, no risk to miss testing something relevant, no code to write to select, one single deadly-simple line to write, no clutter added! Done!
+- Without `rematch` we need to extract the relevant parts out of a big output or structure in order to avoid cluttering the test. That implies deciding which part is relevant and which is not, besides writing the code to extract the parts and test each one of them.
+- With `rematch` storing the whole structure is a lot easier and effective: no decisions to make, no risk to miss testing something relevant, no code to write to select, one single deadly-simple line to write with no clutter added! Done!
 
 ## Installation
 
@@ -166,7 +180,7 @@ After that you can just use its assertions/expectations in your tests.
 ## Caveats
 
 - You can use `rematch` with any value, even your own complex objects and even without serialization, however since they get compared by minitest, they must implement a `==` method like any other native ruby object.
-- Editing an existing test file containing rematch tests may orphan some entry in the store file. That will not affect your test results, however you can [update the stored values](#update-the-stored-values) if you want to keep it tidy.
+- Editing an existing test file containing rematch tests may orphan some entry in the store file. That will not affect your test results in any way, however you can [update the stored values](#update-the-stored-values) if you want to keep it tidy.
 
 ## Repository Info
 
