@@ -153,15 +153,15 @@ Rematch stores the expected value for you: whatever is returned by your test exp
 
     ```ruby
     # cluttered and hard to update
-    must_equal '...big output spanning multiple lines ...', big_helper(a: 'a')
-    must_equal { big: { deeply: 'nested', complicated: 'structure'}, ...}, big_struct(b: 'b')
+    assert_equal '...big output spanning multiple lines ...', big_helper(a: 'a')
+    assert_equal({ big: { deeply: 'nested', complicated: 'structure'}, ...}, big_struct(b: 'b'))
     
     # this is better
     assert_rematch big_helper(a: 'a')
     assert_rematch big_struct(b: 'b')
     # or this
-    big_helper(a: 'a').must_rematch
-    big_struct(b: 'b').must_rematch 
+    _(big_helper(a: 'a')).must_rematch
+    _(big_struct(b: 'b')).must_rematch 
     ```
 
 - Don't use `rematch` for short specific outputs mostly dependent on the test code. For example:
@@ -169,11 +169,11 @@ Rematch stores the expected value for you: whatever is returned by your test exp
     ```ruby
     # less readable and harder to update 
     assert_rematch square_root(100) 
-    square_root(10_000).must_rematch
+    _(square_root(10_000)).must_rematch
     
     # this is better
     assert_equal 10, square_root(100) 
-    square_root(10_000).must_equal 100
+    _(square_root(10_000)).must_equal 100
     ```
 
 #### Test the whole instead of parts
