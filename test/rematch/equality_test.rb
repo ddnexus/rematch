@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../test_helper'
-require "minitest/unordered"
+require 'minitest/unordered'
 
 module Minitest
   module Assertions
@@ -21,7 +21,7 @@ describe 'rematch/equality' do
   it 'rematches :assert_equal_unordered' do
     # assert_equal_unordered [2,1,3], [1,2,3]
     # the store contains [2,1,3] instead of [1,2,3] (edit manually if rebuilt)
-    _([1,2,3]).must_rematch :assert_equal_unordered
-    assert_rematch [1,2,3], :assert_equal_unordered
+    _([1, 2, 3]).must_rematch :assert_equal_unordered
+    assert_rematch [1, 2, 3], :assert_equal_unordered
   end
 end

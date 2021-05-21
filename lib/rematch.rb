@@ -11,8 +11,10 @@ class Rematch
   @rebuilt = []
   class << self
     attr_accessor :rebuild
+
     def check_rebuild(path)
       return unless @rebuild && !@rebuilt.include?(path)
+
       FileUtils.rm_f(path)
       @rebuilt << path
       puts "Rebuilt #{path}"

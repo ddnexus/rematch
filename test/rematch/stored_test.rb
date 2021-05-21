@@ -9,10 +9,10 @@ describe 'rematch/stored' do
     assert_rematch 'stored_value'
     _(5..34).must_rematch
     assert_rematch 5..34
-    _([1,4,5,6]).must_rematch
-    assert_rematch [1,4,5,6]
-    _(a: 23, b: { c: ['a', 5]}).must_rematch
-    assert_rematch(a: 23, b: { c: ['a', 5]})
+    _([1, 4, 5, 6]).must_rematch
+    assert_rematch [1, 4, 5, 6]
+    _(a: 23, b: { c: ['a', 5] }).must_rematch
+    assert_rematch(a: 23, b: { c: ['a', 5] })
     _(Time.parse('2021-05-16 12:33:31.101458598 +00:00')).must_rematch
     assert_rematch '2021-05-16 12:33:31.101458598 +00:00'
   end
