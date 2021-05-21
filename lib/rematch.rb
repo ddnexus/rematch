@@ -5,7 +5,7 @@ require 'fileutils'
 
 # Implement the key/value store
 class Rematch
-  VERSION = '1.1.0'
+  VERSION = '1.2.0'
   EXT     = '.rematch'
 
   @rebuilt = []
