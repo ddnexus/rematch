@@ -10,7 +10,7 @@
 
 **Declutter your test files from large hardcoded data and update them automatically when your code changes.**
 
-Instead of copying and pasting large outputs or big ruby structures into all the affected test files every time your code change, you can do it the easy way, possibly saving many hours of boring maintenance work!
+Instead of copying and pasting large outputs or big ruby structures into all the affected test files every time your code changes, you can do it the easy way, possibly saving many hours of boring maintenance work!
 
 ### Instead of maintaining this cluttered mess...
 
@@ -178,8 +178,8 @@ Rematch stores the expected value for you: whatever is returned by your test exp
 
 #### Test the whole instead of parts
 
-- Without `rematch` we need to extract the relevant parts out of a big output or structure in order to avoid cluttering the test. That implies deciding which part is relevant and which is not, besides writing the code to extract the parts and test each one of them.
-- With `rematch` storing the whole structure is a lot easier and effective: no decisions to make, no risk to miss testing something relevant, no code to write to select, one single deadly-simple line to write with no clutter added! Done!
+- Without `rematch` if you want to avoid adding clutter and future maintenance, you have to pinpoint the parts worth testing out of a big output or structure. That requires deciding which part is important and which is not, and writing the code to extract the parts and testing each one of them.
+- With `rematch` you can just relax and test the whole output/structure with a single deadly-simple line: way simpler, more effective, without clutter and maintenance free!
 
 ## Installation
 
