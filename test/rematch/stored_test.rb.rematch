@@ -35,5 +35,13 @@
   +00:00
 "[10] rematch/stored#test_0001_rematches entry with stored value": '2021-05-16 12:33:31.101458598
   +00:00'
-"[1] rematch/stored#test_0002_should fail": wrong_value
-"[2] rematch/stored#test_0002_should fail": wrong_value
+"[1] rematch/stored#test_0003_should fail": wrong_value
+"[2] rematch/stored#test_0003_should fail": wrong_value
+"[1] rematch/stored#test_0002_accepts mixed arguments": method first
+"[2] rematch/stored#test_0002_accepts mixed arguments": method first
+"[3] rematch/stored#test_0002_accepts mixed arguments": message first
+"[4] rematch/stored#test_0002_accepts mixed arguments": message first
+"[5] rematch/stored#test_0002_accepts mixed arguments": only method
+"[6] rematch/stored#test_0002_accepts mixed arguments": only method
+"[7] rematch/stored#test_0002_accepts mixed arguments": only message
+"[8] rematch/stored#test_0002_accepts mixed arguments": only message

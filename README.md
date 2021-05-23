@@ -141,6 +141,22 @@ _(my_enum_collection).must_rematch :assert_equal_unordered
 
 **Notice**: The symbol passed must identify an **equality assertion** method, i.e. the method must use a form of comparison of the whole stored value, and must be an assertion method like `:assert_something` and not an expectation method like `:must_something`.
 
+Like any other minitest assertion/expectation, the rematch methods accept also an optional message argument (String or Proc) that gets forwarded to the equality assertion used. Notice that the order of the assertion and message arguments is flexible. The following are all the possible ways you can use the rematch methods:
+
+```ruby
+assert_rematch my_value
+assert_rematch my_value, :assert_something
+assert_rematch my_value, 'my message' 
+assert_rematch my_value, :assert_something, 'my message'
+assert_rematch my_value, 'my message', :assert_something
+
+_(my_value).must_rematch
+_(my_value).must_rematch :assert_something
+_(my_value).must_rematch 'my message'
+_(my_value).must_rematch :assert_something, 'my message'
+_(my_value).must_rematch 'my message', :assert_something
+```
+
 ### Suggestions
 
 #### Check the stores

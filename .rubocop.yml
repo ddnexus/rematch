@@ -16,3 +16,8 @@ AllCops:
 # not cool
 Style/CommentedKeyword:
   Enabled: false
+# allow big describe blocks
+Metrics/BlockLength:
+  Enabled: false
+  Include:
+    - test/**/*
