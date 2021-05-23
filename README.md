@@ -125,7 +125,7 @@ You have a couple of options to do that:
 
 ### Assertions and Expectations
 
-Rematch adds `assert_rematch` and `must_rematch` to `minitest`. By default, it uses `assert_equal` behind the scenes after storing/retrieving the value to compare.
+Rematch adds `assert_rematch` and `must_rematch` to `minitest`. By default, they use `assert_equal` behind the scenes after storing/retrieving the value to compare.
 
 However you can use any other _equality assertion_ that better suits your needs. Here is an example with `assert_equal_unordered` (provided by `minitest-unordered` plugin):
 
@@ -141,7 +141,7 @@ _(my_enum_collection).must_rematch :assert_equal_unordered
 
 **Notice**: The symbol passed must identify an **equality assertion** method, i.e. the method must use a form of comparison of the whole stored value, and must be an assertion method like `:assert_something` and not an expectation method like `:must_something`.
 
-Like any other minitest assertion/expectation, the rematch methods accept also an optional message argument (String or Proc) that gets forwarded to the equality assertion used. Notice that the order of the assertion and message arguments is flexible. The following are all the possible ways you can use the rematch methods:
+Like any other minitest assertion/expectation, the rematch methods accept also an optional message argument (String or Proc) that gets forwarded to the equality assertion used. Notice that the order of the assertion and message arguments is conveniently flexible. The following are all the possible ways you can use the rematch methods:
 
 ```ruby
 assert_rematch my_value
@@ -206,7 +206,7 @@ After that you can just use its assertions/expectations in your tests.
 ## Caveats
 
 - You can use `rematch` with any value, even your own complex objects and even without serialization, however since they get compared by minitest, they must implement a `==` method like any other native ruby object.
-- Editing an existing test file containing rematch tests may orphan some entry in the store file. That will not affect your test results in any way, however you can [update the stored values](#update-the-stored-values) if you want to keep it tidy.
+- Editing an existing test file containing rematch tests may cause the failure of some test that has exchanged its position with another in the block/method. In that case just [update the stored values](#update-the-stored-values).
 
 ## Repository Info
 
