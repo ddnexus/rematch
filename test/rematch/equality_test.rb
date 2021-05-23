@@ -6,8 +6,8 @@ require 'minitest/unordered'
 module Minitest
   module Assertions
     # stupid assertion in real world, but good for testing
-    def assert_equal_insensitive(expected, actual)
-      assert_equal expected.downcase, actual.downcase
+    def assert_equal_insensitive(expected, actual, msg = nil)
+      assert_equal expected.downcase, actual.downcase, msg
     end
   end
 end

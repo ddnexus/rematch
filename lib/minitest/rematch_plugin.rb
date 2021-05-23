@@ -20,8 +20,11 @@ module Minitest
 
   # reopen the minitest module
   module Assertions
-    def assert_rematch(actual, assert_method = :assert_equal)
-      send assert_method, @rematch.rematch(actual), actual
+    def assert_rematch(actual, *args)
+      assertion = :assert_equal
+      message   = nil
+      args.each { |arg| arg.is_a?(Symbol) ? assertion = arg : message = arg }
+      send assertion, @rematch.rematch(actual), actual, message
     end
   end
 

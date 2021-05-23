@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## Version 1.3.0
+
+###  Changes
+
+- added support for message argument and mixed arguments
+- better tests examples and documentation
+
+### Commits
+
+- [87aed49](http://github.com/ddnexus/pagy/commit/87aed49): added support for message argument and mixed arguments
+- [fcc976d](http://github.com/ddnexus/pagy/commit/fcc976d): README update
+- [1bcb7fd](http://github.com/ddnexus/pagy/commit/1bcb7fd): better tests
+- [75be17f](http://github.com/ddnexus/pagy/commit/75be17f): syntax fix in example
+- [b16257a](http://github.com/ddnexus/pagy/commit/b16257a): better examples
+
 ## Version 1.2.0
 
 ###  Changes
