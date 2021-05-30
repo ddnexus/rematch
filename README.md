@@ -107,13 +107,13 @@ end
 
 The first time a new rematch test is run, its returned value is recorded in a `*.rematch` `YAML::Store` file (placed next to the test file). The next times the same test will run, its fresh returned value will be rematched against the recorded value, passing or failing the test as usual.
 
-### Update the stored values
+### How to update the stored values
 
-When your code change you need to update the stored values with the new values from your current code. That is done by deleting the store files and re-running the test.
+When your code change you need to update the stored values with the new values from your current code. With `rematch` you don't need to edit the test files, you just delete the store files and re-run the tests, which will recreate the new updated stores.
 
 You have a couple of options to do that:
 
-- You can manually delete the specific store files (e.g. `frontend_test.rb.rematch`) and re-run the test(s)
+- You can manually delete the specific store files (e.g. `frontend_test.rb.rematch`) and re-run the test(s).
 - Or you can run the test(s) with the `--rematch-rebuild` option. For example:
 
     ```sh
@@ -141,7 +141,7 @@ _(my_enum_collection).must_rematch :assert_equal_unordered
 
 **Notice**: The symbol passed must identify an **equality assertion** method, i.e. the method must use a form of comparison of the whole stored value, and must be an assertion method like `:assert_something` and not an expectation method like `:must_something`.
 
-Like any other minitest assertion/expectation, the rematch methods accept also an optional message argument (String or Proc) that gets forwarded to the equality assertion used. Notice that the order of the assertion and message arguments is conveniently flexible. The following are all the possible ways you can use the rematch methods:
+Like any other minitest assertion/expectation, the rematch methods accept also an optional message argument (String or Proc) that gets forwarded to the used equality assertion method. Notice that the order of the assertion and message arguments is conveniently flexible. The following are all the possible ways you can use the rematch methods:
 
 ```ruby
 assert_rematch my_value
@@ -161,7 +161,7 @@ _(my_value).must_rematch 'my message', :assert_something
 
 #### Check the stores
 
-Rematch stores the expected value for you: whatever is returned by your test expression is what will get stored and compared the next times. That is handy when you know that your code is working properly. If you are not so sure, you should check the stored values by taking a look at the `.rematch` store file, which is a very readable `YAML` file.
+Rematch stores the expected value for you: whatever is returned by your test expression is what will get stored and compared the next times. That is handy when you know that your code is working properly. If you are not so sure, you should check the stored values by taking a look at the `*.rematch` store files, which are very readable `YAML` files.
 
 #### Dos and don'ts
 
