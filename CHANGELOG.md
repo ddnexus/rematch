@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## Version 1.3.1
+
+### Changes
+
+- fix for warning of uninitialized @rebuild variable
+
+### Commits
+
+- [404f4a9](http://github.com/ddnexus/pagy/commit/404f4a9): set explicit default value to @rebuild
+- [7ea5991](http://github.com/ddnexus/pagy/commit/7ea5991): Small README adjustments
+- [ef67f74](http://github.com/ddnexus/pagy/commit/ef67f74): fix for test depending on the previous
+- [b730763](http://github.com/ddnexus/pagy/commit/b730763): Readme fixes and improvements
+
 ## Version 1.3.0
 
 ###  Changes
