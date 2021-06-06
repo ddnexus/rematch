@@ -5,9 +5,10 @@ require 'fileutils'
 
 # Implement the key/value store
 class Rematch
-  VERSION = '1.3.0'
+  VERSION = '1.3.1'
   EXT     = '.rematch'
 
+  @rebuild = false
   @rebuilt = []
   class << self
     attr_accessor :rebuild
