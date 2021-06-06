@@ -8,6 +8,7 @@ class Rematch
   VERSION = '1.3.0'
   EXT     = '.rematch'
 
+  @rebuild = false
   @rebuilt = []
   class << self
     attr_accessor :rebuild
