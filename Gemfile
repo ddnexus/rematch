@@ -2,17 +2,22 @@
 
 source 'https://rubygems.org'
 
-# we cannot use gemspec here because it would load pagy before simplecov so missing files from coverage
+# we cannot use gemspec here because it would load rematch before simplecov so missing files from coverage
 # gemspec
 
-gem 'minitest'
 gem 'rake'
-gem 'rake-manifest'
+
+group :development do
+  gem 'debase'         # companion of ruby-debug-ide
+  gem 'ruby-debug-ide' # companion of debase
+end
 
 group :test do
   gem 'codecov', require: false
+  gem 'minitest'
   gem 'minitest-reporters'
   gem 'minitest-unordered'
+  gem 'rake-manifest'
   gem 'rubocop'
   gem 'rubocop-minitest'
   gem 'rubocop-packaging'
