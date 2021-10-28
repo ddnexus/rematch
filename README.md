@@ -207,6 +207,7 @@ After that you can just use its assertions/expectations in your tests.
 
 - You can use `rematch` with any value, even your own complex objects and even without serialization, however since they get compared by minitest, they must implement a `==` method like any other native ruby object.
 - Editing an existing test file containing rematch tests may cause the failure of some test that has exchanged its position with another in the block/method. In that case just [update the stored values](#update-the-stored-values).
+- If you have to run the same tests on different ruby versions, the `.rematch` file may not be read the same way in different versions due to `Psych` changes between versions. That should only happen in complex objects that use `ivars`. A work-around the issue is storing the raw data underlying the object. For example a `.to_hash` or `.attributes` would store only plain hashes instead of the whole instance with its variables, and that is good enough for testing. 
 
 ## Repository Info
 
