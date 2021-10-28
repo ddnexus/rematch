@@ -17,5 +17,5 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/ddnexus/rematch'
   s.license     = 'MIT'
   s.files       = File.read('rematch.manifest').split
-  s.required_ruby_version = '> 2.1'   # rubocop:disable Gemspec/RequiredRubyVersion # we test from 2.5 but it should work on 2.1
+  s.required_ruby_version = '> 2.5' # we test from 2.5 but it should work on 2.1
 end
