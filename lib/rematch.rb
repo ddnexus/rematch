@@ -13,6 +13,7 @@ class Rematch
   class << self
     attr_accessor :rebuild
 
+    # Check whether path requires rebuild and do it if required
     def check_rebuild(path)
       return unless @rebuild && !@rebuilt.include?(path)
 
@@ -22,7 +23,7 @@ class Rematch
     end
   end
 
-  # path and unique id of the test being run
+  # Path and unique id of the test being run
   def initialize(path:, id:)
     path = "#{path}#{EXT}"
     self.class.check_rebuild(path)
@@ -31,7 +32,7 @@ class Rematch
     @count = 0
   end
 
-  # store if unknown; retrieve otherwise
+  # Retrieve the stored value if the key is known; store the value otherwise
   def rematch(value)
     key = "[#{@count += 1}] #{@id}"
     @store.transaction { |s| s.root?(key) ? s[key] : s[key] = value }

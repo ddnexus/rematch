@@ -10,7 +10,7 @@ module Minitest
     end
   end
 
-  # reopen the minitest class
+  # Reopen the minitest class
   class Test
     def before_setup
       super
@@ -18,17 +18,17 @@ module Minitest
     end
   end
 
-  # reopen the minitest module
+  # Reopen the minitest module
   module Assertions
     def assert_rematch(actual, *args)
       assertion = :assert_equal
       message   = nil
       args.each { |arg| arg.is_a?(Symbol) ? assertion = arg : message = arg }
-      send assertion, @rematch.rematch(actual), actual, message
+      send assertion, @rematch.rematch(actual), actual, message  # assert that the stored value is the same
     end
   end
 
-  # reopen the minitest module
+  # Reopen the minitest module
   module Expectations
     infect_an_assertion :assert_rematch, :must_rematch, true # dont_flip
   end
