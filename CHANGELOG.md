@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## Version 1.4.0
+
+- Added store rematch for easy reconciling of changed values
+- Better cops for rubocop
+- Updated gemfiles and normalized comments
+- Updated gemfiles and gemspec
+- Fix for release-gem workflow
+- Docs improvements
+- Added RubyMine run configurations
+- Added release-gem action
+- Refactoring of coverage
+- Updated rubocop cops
+- Updated gemfiles
+- maintenance update:- updated Gemfile
+- added minitest-reportes
+- better rubocop compliance
+- fix for file missing coverage
+- improved gitignore
+
 ## Version 1.3.1
 
 ### Changes
