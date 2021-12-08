@@ -26,10 +26,16 @@ module Minitest
       args.each { |arg| arg.is_a?(Symbol) ? assertion = arg : message = arg }
       send assertion, @rematch.rematch(actual), actual, message  # assert that the stored value is the same
     end
+
+    def store_assert_rematch(actual, *_args)
+      @rematch.store(actual)
+      raise Minitest::Assertion, '[rematch] the value has been stored: remove the "store_" prefix to pass the test'
+    end
   end
 
   # Reopen the minitest module
   module Expectations
     infect_an_assertion :assert_rematch, :must_rematch, true # dont_flip
+    infect_an_assertion :store_assert_rematch, :store_must_rematch, true # dont_flip
   end
 end

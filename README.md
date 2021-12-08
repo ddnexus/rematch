@@ -109,12 +109,9 @@ The first time a new rematch test is run, its returned value is recorded in a `*
 
 ### How to update the stored values
 
-When your code change you need to update the stored values with the new values from your current code. With `rematch` you don't need to edit the test files, you just delete the store files and re-run the tests, which will recreate the new updated stores.
+With or without `rematch`, when your code change you need to update the stored values with the new values from your current code. With `rematch` you don't need to edit the test files, instead you have a few options:
 
-You have a couple of options to do that:
-
-- You can manually delete the specific store files (e.g. `frontend_test.rb.rematch`) and re-run the test(s).
-- Or you can run the test(s) with the `--rematch-rebuild` option. For example:
+- Run the test(s) with the `--rematch-rebuild` option: it will rebuild the `.rematch` store files for all the tests that you run. For example:
 
     ```sh
     rake test TESTOPTS=--rematch-rebuild                # update all
@@ -122,6 +119,8 @@ You have a couple of options to do that:
     ```
 
     :warning: **WARNING**: Don't forget the  `--rematch-rebuild` option in some script that runs for actual testing or it will never fail!
+- You can manually delete the specific store files (e.g. `frontend_test.rb.rematch`) and re-run the test(s).
+- You can temporarily replace the `assert_rematch`/`must_rematch` calls that you want to update with `store_assert_rematch`/`store_must_rematch` respectively. That will store the new value passed to the assertion/expectation and will fail the test (in order to avoid to store every time any value). Just restore the original `assert_rematch`/`must_rematch` call and the test will pass. 
 
 ### Assertions and Expectations
 
@@ -162,6 +161,14 @@ _(my_value).must_rematch 'my message', :assert_something
 #### Check the stores
 
 Rematch stores the expected value for you: whatever is returned by your test expression is what will get stored and compared the next times. That is handy when you know that your code is working properly. If you are not so sure, you should check the stored values by taking a look at the `*.rematch` store files, which are very readable `YAML` files.
+
+#### Update flow
+
+When you first run your new tests, `rematch` stores whatever value they return under a storage key that is derived from the test description and relative position.  
+
+If you change your code later, you should ensure that the old tests pass before changing the test files. If there is some expected failure, you should reconcile them, usually by temporarily replacing the `assert_rematch`/`must_rematch` calls that you want to update with `store_assert_rematch`/`store_must_rematch` respectively.
+
+If you are going to edit the file more than just reconciling the existing tests (e.g. adding more tests) the smoothest option will be adding the tests at the end of the file, at least initially. That will not change the relative position of the old tests. After you are done adding, you can reorder the tests in your file and [update the stored values](#update-the-stored-values).
 
 #### Dos and don'ts
 
@@ -206,7 +213,6 @@ After that you can just use its assertions/expectations in your tests.
 ## Caveats
 
 - You can use `rematch` with any value, even your own complex objects and even without serialization, however since they get compared by minitest, they must implement a `==` method like any other native ruby object.
-- Editing an existing test file containing rematch tests may cause the failure of some test that has exchanged its position with another in the block/method. In that case just [update the stored values](#update-the-stored-values).
 - If you have to run the same tests on different ruby versions, the `.rematch` file may not be read the same way in different versions due to `Psych` changes between versions. That should only happen in complex objects that use `ivars`. A work-around the issue is storing the raw data underlying the object. For example a `.to_hash` or `.attributes` would store only plain hashes instead of the whole instance with its variables, and that is good enough for testing. 
 
 ## Repository Info

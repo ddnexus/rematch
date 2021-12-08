@@ -45,3 +45,5 @@
 "[6] rematch/stored#test_0002_accepts mixed arguments": only method
 "[7] rematch/stored#test_0002_accepts mixed arguments": only message
 "[8] rematch/stored#test_0002_accepts mixed arguments": only message
+"[1] rematch/stored#test_0004_should force rematch": store-rematch (right_value)
+"[2] rematch/stored#test_0004_should force rematch": store-rematch (right_value)

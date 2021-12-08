@@ -35,4 +35,12 @@ describe 'rematch/stored' do
       assert_rematch 'right_value'
     end
   end
+  it 'should force rematch' do
+    assert_raises(Minitest::Assertion) do
+      store_assert_rematch('store-rematch (right_value)')
+    end
+    assert_raises(Minitest::Assertion) do
+      _('store-rematch (right_value)').store_must_rematch
+    end
+  end
 end

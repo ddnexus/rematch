@@ -34,7 +34,17 @@ class Rematch
 
   # Retrieve the stored value if the key is known; store the value otherwise
   def rematch(value)
-    key = "[#{@count += 1}] #{@id}"
+    key = count_key
     @store.transaction { |s| s.root?(key) ? s[key] : s[key] = value }
+  end
+
+  def store(value)
+    @store.transaction { |s| s[count_key] = value }
+  end
+
+  private
+
+  def count_key
+    "[#{@count += 1}] #{@id}"
   end
 end
