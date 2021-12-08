@@ -14,5 +14,4 @@ describe 'rematch' do
       _(File.read('.github/.env')).must_match "VERSION=#{Rematch::VERSION}"
     end
   end
-
 end

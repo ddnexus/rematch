@@ -15,18 +15,21 @@ AllCops:
     # (in vendor/bundle/ruby/3.0.0/gems/rainbow-3.0.0/.rubocop.yml) and also the extra weird
     # "Unable to find gem panolint; is the gem installed? Gem::MissingSpecError" in all ruby versions
     - vendor/bundle/**/*
-Layout:
-  Exclude:
-    - test/**/*
 
 Layout/LineLength:
   Max: 130
+  Exclude:
+    - test/**/*
 
 Layout/ExtraSpacing:
   AllowForAlignment:
     Enabled: true
   AllowBeforeTrailingComments:
     Enabled: true
+
+Layout/EmptyLines:
+  Exclude:
+    - lib/config/pagy.rb
 
 Layout/BlockAlignment:
   Enabled: false
@@ -45,8 +48,6 @@ Metrics:
 Style/CommentedKeyword:
   Enabled: false
 Style/EmptyCaseCondition:
-  Enabled: false
-Style/Documentation:
   Enabled: false
 
 # these cops are disabled only in the test files in order to
