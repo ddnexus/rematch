@@ -21,7 +21,7 @@ jobs:
           concurrent_skipping: 'never'
           skip_after_successful_duplicate: 'true'
           paths_ignore: '["**/*.md", "**/docs/**"]'
-          do_not_skip: '["pull_request", "workflow_dispatch", "schedule"]'
+          do_not_skip: '["workflow_dispatch", "schedule"]'
 
   ruby_test:
     needs: should_run
@@ -33,15 +33,16 @@ jobs:
         include:
           - ruby-version: 2.5
             env:
-              placeholder: true
+              BUNDLE_GEMFILE: .github/gemfiles/ruby-2.5+
           - ruby-version: 2.6
             env:
-              placeholder: true
+              BUNDLE_GEMFILE: .github/gemfiles/ruby-2.5+
           - ruby-version: 2.7
             env:
-              placeholder: true
+              BUNDLE_GEMFILE: .github/gemfiles/ruby-2.5+
           - ruby-version: 3.0
             env:
+              BUNDLE_GEMFILE: .github/gemfiles/ruby-2.5+
               CODECOV: true
               CHECK_MANIFEST: true
       fail-fast: false
