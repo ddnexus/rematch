@@ -3,13 +3,13 @@
 require 'yaml/store'
 require 'fileutils'
 
-# Implement the key/value store
+# Handles the key/value store for each test
 class Rematch
   VERSION = '1.4.0'
   EXT     = '.rematch'
 
-  @rebuild = false
-  @rebuilt = []
+  @rebuild = false  # rebuild the store?
+  @rebuilt = []     # paths already rebuilt
   class << self
     attr_accessor :rebuild
 
@@ -23,7 +23,7 @@ class Rematch
     end
   end
 
-  # Path and unique id of the test being run
+  # Instantiated at each test, stores the path and the unique id of the test being run
   def initialize(path:, id:)
     path = "#{path}#{EXT}"
     self.class.check_rebuild(path)
@@ -32,19 +32,21 @@ class Rematch
     @count = 0
   end
 
-  # Retrieve the stored value if the key is known; store the value otherwise
+  # Retrieve the stored value for the current assertion if its key is known; store the value otherwise
   def rematch(value)
-    key = count_key
+    key = assertion_key
     @store.transaction { |s| s.root?(key) ? s[key] : s[key] = value }
   end
 
+  # Store the value
   def store(value)
-    @store.transaction { |s| s[count_key] = value }
+    @store.transaction { |s| s[assertion_key] = value }
   end
 
   private
 
-  def count_key
+  # Return the key for the current assertion
+  def assertion_key
     "[#{@count += 1}] #{@id}"
   end
 end

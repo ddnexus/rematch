@@ -7,7 +7,7 @@ unless ENV['RM_INFO']   # RubyMine safe
   Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 end
 
-# we cannot use gemspec in the gemfile which would load remath before simplecov so missing files from coverage
+# We cannot use 'gemspec' in the gemfile which would load rematch before simplecov so missing files from coverage
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'rematch'
 require 'minitest/autorun'
