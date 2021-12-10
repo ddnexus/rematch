@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 1.4.1
+
+- Normalized comments and naming
+- Added bump.sh utility script
+- Added more gemspec metadata entries
+
 ## Version 1.4.0
 
 - Added store rematch for easy reconciling of changed values
