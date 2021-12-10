@@ -17,6 +17,9 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/ddnexus/rematch'
   s.license     = 'MIT'
   s.files       = File.read('rematch.manifest').split
-  s.metadata    = { 'rubygems_mfa_required' => 'true' }
+  s.metadata    = { 'rubygems_mfa_required' => 'true',
+                    'homepage_uri'          => 'https://github.com/ddneus/rematch',
+                    'bug_tracker_uri'       => 'https://github.com/ddnexus/rematch/issues',
+                    'changelog_uri'         => 'https://github.com/ddnexus/rematch/blob/master/CHANGELOG.md' }
   s.required_ruby_version = '> 2.5' # we test from 2.5 but it should work on 2.1
 end
