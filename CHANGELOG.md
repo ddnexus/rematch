@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 1.4.2
+
+- Update rematch.gemspec (#1)
+
 ## Version 1.4.1
 
 - Normalized comments and naming
