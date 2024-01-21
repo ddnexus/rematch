@@ -31,25 +31,22 @@ jobs:
     strategy:
       matrix:
         include:
-          - ruby-version: 2.5
+          - ruby-version: 3.1
             env:
-              BUNDLE_GEMFILE: .github/gemfiles/ruby-2.5+
-          - ruby-version: 2.6
+              BUNDLE_GEMFILE: .github/gemfiles/default
+          - ruby-version: 3.2
             env:
-              BUNDLE_GEMFILE: .github/gemfiles/ruby-2.5+
-          - ruby-version: 2.7
+              BUNDLE_GEMFILE: .github/gemfiles/default
+          - ruby-version: 3.3
             env:
-              BUNDLE_GEMFILE: .github/gemfiles/ruby-2.5+
-          - ruby-version: 3.0
-            env:
-              BUNDLE_GEMFILE: .github/gemfiles/ruby-2.5+
+              BUNDLE_GEMFILE: .github/gemfiles/default
               CODECOV: true
               CHECK_MANIFEST: true
       fail-fast: false
     env: ${{ matrix.env }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up ruby
         uses: ruby/setup-ruby@v1
@@ -65,9 +62,10 @@ jobs:
 
       - name: Run Codecov
         if: ${{ env.CODECOV == 'true' }}
-        uses: codecov/codecov-action@v1.3.2
+        uses: codecov/codecov-action@v3.1.4
         with:
           fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Check gem manifest
         if: ${{ env.CHECK_MANIFEST == 'true' }}
