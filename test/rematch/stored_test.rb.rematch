@@ -1,49 +1,51 @@
 ---
-"[1] rematch/stored#test_0001_rematches entry with stored value": stored_value
-"[2] rematch/stored#test_0001_rematches entry with stored value": stored_value
-"[3] rematch/stored#test_0001_rematches entry with stored value": !ruby/range
-  begin: 5
-  end: 34
-  excl: false
-"[4] rematch/stored#test_0001_rematches entry with stored value": !ruby/range
-  begin: 5
-  end: 34
-  excl: false
-"[5] rematch/stored#test_0001_rematches entry with stored value":
-- 1
-- 4
-- 5
-- 6
-"[6] rematch/stored#test_0001_rematches entry with stored value":
-- 1
-- 4
-- 5
-- 6
-"[7] rematch/stored#test_0001_rematches entry with stored value":
-  :a: 23
-  :b:
-    :c:
-    - a
-    - 5
-"[8] rematch/stored#test_0001_rematches entry with stored value":
-  :a: 23
-  :b:
-    :c:
-    - a
-    - 5
-"[9] rematch/stored#test_0001_rematches entry with stored value": 2021-05-16 12:33:31.101458598
-  +00:00
-"[10] rematch/stored#test_0001_rematches entry with stored value": '2021-05-16 12:33:31.101458598
-  +00:00'
-"[1] rematch/stored#test_0003_should fail": wrong_value
-"[2] rematch/stored#test_0003_should fail": wrong_value
-"[1] rematch/stored#test_0002_accepts mixed arguments": method first
-"[2] rematch/stored#test_0002_accepts mixed arguments": method first
-"[3] rematch/stored#test_0002_accepts mixed arguments": message first
-"[4] rematch/stored#test_0002_accepts mixed arguments": message first
-"[5] rematch/stored#test_0002_accepts mixed arguments": only method
-"[6] rematch/stored#test_0002_accepts mixed arguments": only method
-"[7] rematch/stored#test_0002_accepts mixed arguments": only message
-"[8] rematch/stored#test_0002_accepts mixed arguments": only message
-"[1] rematch/stored#test_0004_should force rematch": store-rematch (right_value)
-"[2] rematch/stored#test_0004_should force rematch": store-rematch (right_value)
+rematch/stored#test_0001_rematches entry with stored value:
+  :string_e: stored_value
+  :string_a: stored_value
+  :range_e: !ruby/range
+    begin: 5
+    end: 34
+    excl: false
+  :range_a: !ruby/range
+    begin: 5
+    end: 34
+    excl: false
+  :array_e:
+  - 1
+  - 4
+  - 5
+  - 6
+  :array_a:
+  - 1
+  - 4
+  - 5
+  - 6
+  :nested_hash_e:
+    :a: 23
+    :b:
+      :c:
+      - a
+      - 5
+  :nested_hash_a:
+    :a: 23
+    :b:
+      :c:
+      - a
+      - 5
+  :time_e: 2021-05-16 12:33:31.101458598 +00:00
+  :time_a: 2021-05-16 12:33:31.101458598 +00:00
+rematch/stored#test_0002_accepts mixed arguments:
+  :k1: method first
+  :k2: method first
+  :k3: message first
+  :k4: message first
+  :k5: only method
+  :k6: only method
+  :k7: only message
+  :k8: only message
+rematch/stored#test_0003_should fail:
+  :wrong1: wrong_value
+  :wrong2: wrong_value
+rematch/stored#test_0004_should force rematch:
+  :sa: store-rematch (right_value)
+  :se: store-rematch (right_value)

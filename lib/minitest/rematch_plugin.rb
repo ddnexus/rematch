@@ -23,16 +23,16 @@ module Minitest
   # Reopen the minitest module
   module Assertions
     # Main assertion
-    def assert_rematch(actual, *args)
+    def assert_rematch(key, actual, *args)
       assertion = :assert_equal
       message   = nil
       args.each { |arg| arg.is_a?(Symbol) ? assertion = arg : message = arg }
-      send assertion, @rematch.rematch(actual), actual, message  # assert that the stored value is the same actual value
+      send assertion, @rematch.rematch(key, actual), actual, message  # assert that the stored value is the same actual value
     end
 
     # Temporarily used to store the actual value, useful for reconciliation of expected changed values
-    def store_assert_rematch(actual, *_args)
-      @rematch.store(actual)
+    def store_assert_rematch(key, actual, *_args)
+      @rematch.store(key, actual)
       # Always fail after storing, forcing the restore of the original assertion/expectation
       raise Minitest::Assertion, '[rematch] the value has been stored: remove the "store_" prefix to pass the test'
     end
@@ -41,7 +41,7 @@ module Minitest
   # Reopen the minitest module
   module Expectations
     # Add the expectations pointing to the assertions
-    infect_an_assertion :assert_rematch, :must_rematch, true # dont_flip
-    infect_an_assertion :store_assert_rematch, :store_must_rematch, true # dont_flip
+    infect_an_assertion :assert_rematch, :must_rematch
+    infect_an_assertion :store_assert_rematch, :store_must_rematch
   end
 end

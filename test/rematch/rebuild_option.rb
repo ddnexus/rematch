@@ -11,7 +11,7 @@ describe 'rematch/rebuild_option' do
   it 'rebuilds the store' do
     store_path = "#{__FILE__}#{Rematch::EXT}"
     _(store_path).path_wont_exist   # the rebuild should have deleted the file
-    _('store_value').must_rematch
+    _('store_value').must_rematch :store
     _(store_path).path_must_exist   # the test above should have created the file
   end
 end

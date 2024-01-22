@@ -4,14 +4,10 @@ source 'https://rubygems.org'
 
 # we cannot use gemspec here because it would load rematch before simplecov so missing files from coverage
 # gemspec
-
+gem 'mutex_m'
 gem 'rake'
 gem 'rake-manifest'
-
-group :development do
-  gem 'debase'         # companion of ruby-debug-ide
-  gem 'ruby-debug-ide' # companion of debase
-end
+gem 'readline-ext' # temporary fix for RM 3.3.2 console with ruby >= 3.3.0
 
 group :test do
   gem 'codecov', require: false

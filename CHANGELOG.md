@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## Version 2.0.0
+
+- Refactor key and storage system:
+  - You must pass an explicit store key as the first argument for each rematch test
+  - The tests will work even when moved around (providing the same key is used)
+  - The .rematch store files are more readable for easily check and pair the stored values with the test expected values
+
+- Updated github actions
+- Updated gems, ruby prereq and rubocop to 3.1
+
 ## Version 1.4.2
 
 - Update rematch.gemspec (#1)
