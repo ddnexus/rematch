@@ -29,24 +29,34 @@ class Rematch
     self.class.check_rebuild(path)
     @store = YAML::Store.new(path, true)
     @id    = id
-    @count = 0
   end
 
   # Retrieve the stored value for the current assertion if its key is known; store the value otherwise
-  def rematch(value)
-    key = assertion_key
-    @store.transaction { |s| s.root?(key) ? s[key] : s[key] = value }
+  def rematch(key, value)
+    # key = assertion_key(key)
+    @store.transaction do |s|
+      if s.root?(@id)                # there is the root id
+        if s[@id].key?(key)          # there is the key
+          s[@id][key]                # return it
+        else                         # not such a key
+          s[@id][key] = value        # set
+        end
+      else                           # there is no root yet
+        s[@id] = { key => value }    # the key is the first one
+        value                        # always return the value
+      end
+    end
   end
 
   # Store the value
-  def store(value)
-    @store.transaction { |s| s[assertion_key] = value }
-  end
-
-  private
-
-  # Return the key for the current assertion
-  def assertion_key
-    "[#{@count += 1}] #{@id}"
+  def store(key, value)
+    @store.transaction do |s|
+      if s.root?(@id)                # there is the root id
+        s[@id][key] = value          # set
+      else                           # there is no root yet
+        s[@id] = { key => value }    # the key is the first one
+        value                        # always return the value
+      end
+    end
   end
 end

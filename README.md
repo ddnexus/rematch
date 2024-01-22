@@ -1,10 +1,12 @@
 # Rematch
 
 [![Gem Version](https://img.shields.io/gem/v/rematch.svg?label=rematch&colorA=99004d&colorB=cc0066)](https://rubygems.org/gems/rematch)
-[![Build Status](https://img.shields.io/github/workflow/status/ddnexus/rematch/Rematch%20CI/master)](https://github.com/ddnexus/rematch/actions?query=branch:master)
-[![CodeCov](https://img.shields.io/codecov/c/github/ddnexus/rematch.svg?colorA=1f7a1f&colorB=2aa22a)](https://codecov.io/gh/ddnexus/rematch)
-![Rubocop Status](https://img.shields.io/badge/rubocop-passing-rubocop.svg?colorA=1f7a1f&colorB=2aa22a)
-[![MIT license](https://img.shields.io/badge/license-MIT-mit.svg?colorA=1f7a1f&colorB=2aa22a)](http://opensource.org/licenses/MIT)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/ddnexus/rematch/rematch-ci.yml?branch=master)]
+(https://github.com/ddnexus/rematch/actions/workflows/rematch-ci.yml?query=branch%3Amaster)</span> <span>
+[![codecov](https://codecov.io/gh/ddnexus/rematch/graph/badge.svg?token=59PNN2TW57)](https://codecov.io/gh/ddnexus/rematch)
+</span> 
+<span>
+ [![MIT license](https://img.shields.io/badge/license-MIT-mit.svg?colorA=1f7a1f&colorB=2aa22a)](http://opensource.org/licenses/MIT)
 
 ## Overview
 
@@ -96,11 +98,13 @@ end
 
 ```ruby
 it 'generates the pagination nav tag' do
-  assert_rematch view.pagy_nav(pagy)
+  assert_rematch :nav, view.pagy_nav(pagy)
 end
 it 'generates the metadata hash' do
-  assert_rematch controller.pagy_metadata
+  assert_rematch :meta, controller.pagy_metadata
 end
+# :nav and :meta are arbitrary keys for storing the test case 
+# they must be unique inside the test block
 ```
 
 ### How does it work?
@@ -133,9 +137,9 @@ However you can use any other _equality assertion_ that better suits your needs.
 assert_equal_unordered [:big, :expected, :enumerable, :collection, ...], my_enum_collection
 
 # you can rematch it like: 
-assert_rematch my_enum_collection, :assert_equal_unordered
+assert_rematch :my_key, my_enum_collection, :assert_equal_unordered
 # or
-_(my_enum_collection).must_rematch :assert_equal_unordered
+_(my_enum_collection).must_rematch :my_key, :assert_equal_unordered
 ```
 
 **Notice**: The symbol passed must identify an **equality assertion** method, i.e. the method must use a form of comparison of the whole stored value, and must be an assertion method like `:assert_something` and not an expectation method like `:must_something`.
@@ -143,20 +147,30 @@ _(my_enum_collection).must_rematch :assert_equal_unordered
 Like any other minitest assertion/expectation, the rematch methods accept also an optional message argument (String or Proc) that gets forwarded to the used equality assertion method. Notice that the order of the assertion and message arguments is conveniently flexible. The following are all the possible ways you can use the rematch methods:
 
 ```ruby
-assert_rematch my_value
-assert_rematch my_value, :assert_something
-assert_rematch my_value, 'my message' 
-assert_rematch my_value, :assert_something, 'my message'
-assert_rematch my_value, 'my message', :assert_something
+assert_rematch :c1, my_value
+assert_rematch :c1, my_value, :assert_something
+assert_rematch :c1, my_value, 'my message' 
+assert_rematch :c1, my_value, :assert_something, 'my message'
+assert_rematch :c1, my_value, 'my message', :assert_something
 
-_(my_value).must_rematch
-_(my_value).must_rematch :assert_something
-_(my_value).must_rematch 'my message'
-_(my_value).must_rematch :assert_something, 'my message'
-_(my_value).must_rematch 'my message', :assert_something
+_(my_value).must_rematch :c1 
+_(my_value).must_rematch :c1, :assert_something
+_(my_value).must_rematch :c1, 'my message'
+_(my_value).must_rematch :c1, :assert_something, 'my message'
+_(my_value).must_rematch :c1, 'my message', :assert_something
 ```
 
 ### Suggestions
+
+#### Test case keys
+
+Rematch assertions/expectations are typical Minitest assertions/expectations, with the extra feature to store and retrieve automatically the expected value from a key-value store.
+
+Before `rematch v2.0` the keys were based on the sequential position of the test cases inside the test block, but that was very fragile and need to rebuild the store every time you move around/add/remove cases.
+
+Since `rematch v2.0` you must pass an arbitrary key as the first argument to any rematch assertion/expectation.
+
+The key must be unique inside the test block because it's used to identify each specific test case. You can use any value that could be used as a Hash key (e.g. symbol, string, integer, and almost everything), however it's much more practical to use descriptive symbols for each test case or a no-brainer series of symbols (e.g. :c1, :c2, c3, ...). That will be also very useful to match the case against the store file, when you want to check the stored values.
 
 #### Check the stores
 
@@ -164,15 +178,15 @@ Rematch stores the expected value for you: whatever is returned by your test exp
 
 #### Update flow
 
-When you first run your new tests, `rematch` stores whatever value they return under a storage key that is derived from the test description and relative position.  
+When you first run your new tests, `rematch` stores whatever value they return under the storage case key that is derived from the test description.  
 
 If you change your code later, you should ensure that the old tests pass before changing the test files. If there is some expected failure, you should reconcile them, usually by temporarily replacing the `assert_rematch`/`must_rematch` calls that you want to update with `store_assert_rematch`/`store_must_rematch` respectively.
-
-If you are going to edit the file more than just reconciling the existing tests (e.g. adding more tests) the smoothest option will be adding the tests at the end of the file, at least initially. That will not change the relative position of the old tests. After you are done adding, you can reorder the tests in your file and [update the stored values](#update-the-stored-values).
+ 
+From time to time, you may want to rebuild a totally passing test suite just to cleanup orphan keys and reorganizing the tests in a better order. IMPORTANT: DO NOT REBUILD unless everything passes, or you will have stored the wrong actual values!
 
 #### Dos and don'ts
 
-- Use `rematch` with large output or structures that are mostly generated outside your test code. Rematch can declutter your tests and [update the stored values](#update-the-stored-values) in seconds. For example:
+- Use `rematch` with large output or structures that are mostly generated outside your test code. Rematch can declutter your tests and [update the stored values](#how-to-update-the-stored-values) in seconds. For example:
 
     ```ruby
     # cluttered and hard to update
@@ -180,19 +194,19 @@ If you are going to edit the file more than just reconciling the existing tests 
     assert_equal({ big: { deeply: 'nested', complicated: 'structure'}, ...}, big_struct(b: 'b'))
     
     # this is better
-    assert_rematch big_helper(a: 'a')
-    assert_rematch big_struct(b: 'b')
+    assert_rematch :helper, big_helper(a: 'a')
+    assert_rematch :struct, struct(b: 'b')
     # or this
-    _(big_helper(a: 'a')).must_rematch
-    _(big_struct(b: 'b')).must_rematch 
+    _(big_helper(a: 'a')).must_rematch :helper
+    _(big_struct(b: 'b')).must_rematch :struct
     ```
 
 - Don't use `rematch` for short specific outputs mostly dependent on the test code. For example:
 
     ```ruby
     # less readable and harder to update 
-    assert_rematch square_root(100) 
-    _(square_root(10_000)).must_rematch
+    assert_rematch :root, square_root(100) 
+    _(square_root(10_000)).must_rematch :root
     
     # this is better
     assert_equal 10, square_root(100) 
@@ -242,4 +256,3 @@ Expect any other branch to be experimental, force-pushed, rebased and/or deleted
 ## License
 
 This project is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
