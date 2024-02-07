@@ -128,7 +128,8 @@ With or without `rematch`, when your code change you need to update the stored v
 
 ### Assertions and Expectations
 
-Rematch adds `assert_rematch` and `must_rematch` to `minitest`. By default, they use `assert_equal` behind the scenes after storing/retrieving the value to compare.
+Rematch adds `assert_rematch` and `must_rematch` to `minitest`. By default, they use `assert_equal` or `assert_nil` (for `nil` 
+values) behind the scenes after storing/retrieving the value to compare.
 
 However you can use any other _equality assertion_ that better suits your needs. Here is an example with `assert_equal_unordered` (provided by `minitest-unordered` plugin):
 

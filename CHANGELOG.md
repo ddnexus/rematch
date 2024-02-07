@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 2.1.0
+
+- Nil values use assert_nil after deprecation of assert_equal nil
+
 ## Version 2.0.0
 
 - Refactor key and storage system:

@@ -5,7 +5,7 @@ require 'fileutils'
 
 # Handles the key/value store for each test
 class Rematch
-  VERSION = '2.0.0'
+  VERSION = '2.1.0'
   EXT     = '.rematch'
 
   @rebuild = false  # rebuild the store?
