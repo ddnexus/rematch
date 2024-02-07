@@ -27,7 +27,11 @@ module Minitest
       assertion = :assert_equal
       message   = nil
       args.each { |arg| arg.is_a?(Symbol) ? assertion = arg : message = arg }
-      send assertion, @rematch.rematch(key, actual), actual, message  # assert that the stored value is the same actual value
+      if actual.nil?   # use specific assert_nil after deprecation of assert_equal nil
+        assert_nil @rematch.rematch(key, actual), message
+      else
+        send assertion, @rematch.rematch(key, actual), actual, message  # assert that the stored value is the same actual value
+      end
     end
 
     # Temporarily used to store the actual value, useful for reconciliation of expected changed values

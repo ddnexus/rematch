@@ -11,3 +11,7 @@ rematch/equality#test_0002_rematches :assert_equal_unordered:
 rematch/equality#test_0001_rematches :assert_equal_insensitive:
   :mixE: MIXED_case
   :mixA: MIXED_case
+rematch/equality#test_0003_rematches :assert_nil:
+  :k1:
+rematch/equality#test_0004_rematches empty:
+  :k1: ''

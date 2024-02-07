@@ -24,4 +24,10 @@ describe 'rematch/equality' do
     _([1, 2, 3]).must_rematch :k1, :assert_equal_unordered
     assert_rematch :k2, [1, 2, 3], :assert_equal_unordered
   end
+  it 'rematches :assert_nil' do
+    _(nil).must_rematch :k1
+  end
+  it 'rematches empty' do
+    _("").must_rematch :k1
+  end
 end
