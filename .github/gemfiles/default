@@ -9,7 +9,7 @@ gem 'rake'
 gem 'rake-manifest'
 
 group :test do
-  gem 'codecov'
+  gem 'codecov', '>= 0.6', require: false  # explicit version needed for some reason
   gem 'minitest'
   gem 'minitest-reporters'
   gem 'minitest-unordered'
@@ -18,5 +18,5 @@ group :test do
   gem 'rubocop-packaging'
   gem 'rubocop-performance'
   gem 'rubocop-rake'
-  gem 'simplecov'
+  gem 'simplecov', require: false
 end
