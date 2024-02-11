@@ -2,4 +2,4 @@
 
 Rake.add_rakelib 'tasks'
 
-task default: %i[test rubocop coverage_summary manifest:check]
+task default: %i[test rubocop check_coverage manifest:check]

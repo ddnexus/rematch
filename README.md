@@ -2,9 +2,8 @@
 
 [![Gem Version](https://img.shields.io/gem/v/rematch.svg?label=rematch&colorA=99004d&colorB=cc0066)](https://rubygems.org/gems/rematch)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/ddnexus/rematch/rematch-ci.yml?branch=master)](https://github.com/ddnexus/rematch/actions/workflows/rematch-ci.yml?query=branch%3Amaster)</span> <span>
-[![codecov](https://codecov.io/gh/ddnexus/rematch/graph/badge.svg?token=59PNN2TW57)](https://codecov.io/gh/ddnexus/rematch)
-</span>
-<span>
+![Coverage](https://img.shields.io/badge/coverage-100%25-coverage.svg?colorA=1f7a1f&colorB=2aa22a)</span> <span>
+![Rubocop Status](https://img.shields.io/badge/rubocop-passing-rubocop.svg?colorA=1f7a1f&colorB=2aa22a)</span> <span>
 [![MIT license](https://img.shields.io/badge/license-MIT-mit.svg?colorA=1f7a1f&colorB=2aa22a)](http://opensource.org/licenses/MIT)
 
 ## Overview

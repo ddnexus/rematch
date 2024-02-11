@@ -4,12 +4,10 @@ GEM
     ansi (1.5.0)
     ast (2.4.2)
     builder (3.2.4)
-    codecov (0.6.0)
-      simplecov (>= 0.15, < 0.22)
     docile (1.4.0)
     json (2.7.1)
     language_server-protocol (3.17.0.3)
-    minitest (5.22.1)
+    minitest (5.22.2)
     minitest-reporters (1.6.1)
       ansi
       builder
@@ -52,7 +50,7 @@ GEM
     rubocop-rake (0.6.0)
       rubocop (~> 1.0)
     ruby-progressbar (1.13.0)
-    simplecov (0.21.2)
+    simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
@@ -64,7 +62,6 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  codecov
   minitest
   minitest-reporters
   minitest-unordered

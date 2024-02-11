@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'coverage_setup' unless ENV['RUBYMINE_SIMPLECOV_COVERAGE_PATH']  # skipped if RubyMine run with coverage
+require 'simplecov' unless ENV['RUBYMINE_SIMPLECOV_COVERAGE_PATH']  # skipped if RubyMine run with coverage
 
 unless ENV['RM_INFO']   # RubyMine safe
   require "minitest/reporters"

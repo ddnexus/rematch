@@ -10,7 +10,6 @@ gem 'rake-manifest'
 gem 'readline-ext' # temporary fix for RM 3.3.2 console with ruby >= 3.3.0
 
 group :test do
-  gem 'codecov', require: false
   gem 'minitest'
   gem 'minitest-reporters'
   gem 'minitest-unordered'
