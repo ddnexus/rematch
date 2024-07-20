@@ -1,0 +1,3 @@
+---
+rematch/rebuild_option_test_0001_rebuilds_the_store:
+  :store: store_value

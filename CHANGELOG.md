@@ -1,4 +1,13 @@
 # CHANGELOG
+              
+## Version 3.0.0
+
+- Refactor keys and default extension
+  - Changed default extension for rematch files to .yml
+  - Rematch::EXT is now Rematch::DEFAULT[:ext], so it doesn't trigger the ruby warning when you change it
+  - Rematch::DEFAULT[:ext] default value is `.yml` now
+  - The test keys in the storage files have no "#", ":" and spaces... only "_", so they are easier to parse even with clumsy 
+    yaml parsers/highlighters (in case you want to inspect them, they will look right and easier to read)
 
 ## Version 2.1.0
 

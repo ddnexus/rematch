@@ -1,0 +1,17 @@
+---
+rematch/equality_test_0002_rematches__assert_equal_unordered:
+  :k1:
+  - 1
+  - 2
+  - 3
+  :k2:
+  - 1
+  - 2
+  - 3
+rematch/equality_test_0003_rematches__assert_nil:
+  :k1:
+rematch/equality_test_0004_rematches_empty:
+  :k1: ''
+rematch/equality_test_0001_rematches__assert_equal_insensitive:
+  :mixE: mixed_CASE
+  :mixA: mixed_CASE

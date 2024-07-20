@@ -1,3 +1,0 @@
----
-rematch/rebuild#test_0001_refreshes the value with check_rebuild:
-  :store: store_value

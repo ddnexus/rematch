@@ -5,8 +5,8 @@ require 'fileutils'
 
 # Handles the key/value store for each test
 class Rematch
-  VERSION = '2.1.0'
-  EXT     = '.rematch'
+  VERSION = '3.0.0'
+  DEFAULT = { ext: '.yaml' }  # rubocop:disable Style/MutableConstant
 
   @rebuild = false  # rebuild the store?
   @rebuilt = []     # paths already rebuilt
@@ -25,10 +25,10 @@ class Rematch
 
   # Instantiated at each test, stores the path and the unique id of the test being run
   def initialize(path:, id:)
-    path = "#{path}#{EXT}"
+    path = "#{path}#{DEFAULT[:ext]}"
     self.class.check_rebuild(path)
     @store = YAML::Store.new(path, true)
-    @id    = id
+    @id    = id.tr('#: ', '_')       # easier key string for clumsy yaml parsers/highlighters
   end
 
   # Retrieve the stored value for the current assertion if its key is known; store the value otherwise

@@ -2,6 +2,8 @@
 
 source 'https://rubygems.org'
 
+gemspec
+
 # we cannot use gemspec here because it would load rematch before simplecov so missing files from coverage
 # gemspec
 gem 'mutex_m'

@@ -108,7 +108,7 @@ end
 
 ### How does it work?
 
-The first time a new rematch test is run, its returned value is recorded in a `*.rematch` `YAML::Store` file (placed next to the
+The first time a new rematch test is run, its returned value is recorded in a `*.yaml` `YAML::Store` file (placed next to the
 test file). The next times the same test will run, its fresh returned value will be rematched against the recorded value, passing
 or failing the test as usual.
 
@@ -117,7 +117,7 @@ or failing the test as usual.
 With or without `rematch`, when your code change you need to update the stored values with the new values from your current code.
 With `rematch` you don't need to edit the test files, instead you have a few options:
 
-- Run the test(s) with the `--rematch-rebuild` option: it will rebuild the `.rematch` store files for all the tests that you run.
+- Run the test(s) with the `--rematch-rebuild` option: it will rebuild the store files for all the tests that you run.
   For example:
 
     ```sh
@@ -127,7 +127,7 @@ With `rematch` you don't need to edit the test files, instead you have a few opt
 
   :warning: **WARNING**: Don't forget the  `--rematch-rebuild` option in some script that runs for actual testing or it will never
   fail!
-- You can manually delete the specific store files (e.g. `frontend_test.rb.rematch`) and re-run the test(s).
+- You can manually delete the specific store files (e.g. `frontend_test.rb.yaml`) and re-run the test(s).
 - You can temporarily replace the `assert_rematch`/`must_rematch` calls that you want to update
   with `store_assert_rematch`/`store_must_rematch` respectively. That will store the new value passed to the assertion/expectation
   and will fail the test (in order to avoid to store every time any value). Just restore the
@@ -193,7 +193,7 @@ to match the case against the store file, when you want to check the stored valu
 
 Rematch stores the expected value for you: whatever is returned by your test expression is what will get stored and compared the
 next times. That is handy when you know that your code is working properly. If you are not so sure, you should check the stored
-values by taking a look at the `*.rematch` store files, which are very readable `YAML` files.
+values by taking a look at the store files, which are very readable `YAML` files.
 
 #### Update flow
 
