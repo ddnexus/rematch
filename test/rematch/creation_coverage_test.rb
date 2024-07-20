@@ -4,7 +4,7 @@ require_relative '../test_helper'
 
 # ensure there is no store
 def delete_store
-  FileUtils.rm("#{__FILE__}#{Rematch::EXT}", force: true)
+  FileUtils.rm("#{__FILE__}#{Rematch::DEFAULT[:ext]}", force: true)
 end
 
 describe 'rematch/equality' do
