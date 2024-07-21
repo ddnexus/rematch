@@ -27,15 +27,15 @@ describe 'rematch/stored' do
     assert_rematch :k8, 'only message', 'mixed arguments'
   end
   it 'should fail' do
-    # the store contains 'wrong_value' instead of 'right_value' (edit manually if this test fails)
+    # the store contains 'right_value' instead of 'wrong_value' (edit manually if this test fails)
     error = assert_raises(Minitest::Assertion) do
-      _('right_value').must_rematch :wrong1
+      _('wrong_value').must_rematch :right1
     end
-    _(error.message).must_equal "Expected: \"wrong_value\"\n  Actual: \"right_value\""
+    _(error.message).must_equal "Expected: \"right_value\"\n  Actual: \"wrong_value\""
     error2 = assert_raises(Minitest::Assertion) do
-      assert_rematch :wrong2, 'right_value'
+      assert_rematch :right2, 'wrong_value'
     end
-    _(error2.message).must_equal "Expected: \"wrong_value\"\n  Actual: \"right_value\""
+    _(error2.message).must_equal "Expected: \"right_value\"\n  Actual: \"wrong_value\""
   end
   it 'should force rematch' do
     error = assert_raises(Minitest::Assertion) do

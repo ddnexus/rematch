@@ -7,16 +7,23 @@ module Minitest
   # Set Rematch.rebuild with the --rematch-rebuild
   def self.plugin_rematch_options(opts, _options)
     opts.on '--rematch-rebuild', 'Rebuild the stores with the current entries/values' do
-      Rematch.rebuild = true
+      Rematch.rebuild      = true
+      Rematch.skip_warning = true
     end
+    # :nocov:
+    opts.on '--rematch-skip-warning', 'Skip the warning on storing a new value' do
+      Rematch.skip_warning = true
+    end
+    # :nocov:
   end
 
   # Reopen the minitest class
   class Test
     # Create the rematch object for each test
-    def before_setup
+    def after_setup
       super
-      @rematch = Rematch.new(path: method(name).source_location.first, id: location)
+      @rematch = Rematch.new(path: method(name).source_location.first,
+                             id: location)
     end
   end
 
@@ -36,7 +43,7 @@ module Minitest
 
     # Temporarily used to store the actual value, useful for reconciliation of expected changed values
     def store_assert_rematch(key, actual, *_args)
-      @rematch.store(key, actual)
+      @rematch.rematch(key, actual, overwrite: true)
       # Always fail after storing, forcing the restore of the original assertion/expectation
       raise Minitest::Assertion, '[rematch] the value has been stored: remove the "store_" prefix to pass the test'
     end
