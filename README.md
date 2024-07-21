@@ -106,6 +106,15 @@ end
 # they must be unique inside the test block
 ```
 
+## Installation
+
+Rematch works as a `minitest` plugin, so just add it to your `Gemfile` (usually in the `:test` group) or require it if you don't
+use `bundler`, and minitest will find and load it.
+
+After that you can just use its assertions/expectations in your tests.
+ 
+## Usage
+
 ### How does it work?
 
 The first time a new rematch test is run, its returned value is recorded in a `*.yaml` `YAML::Store` file (placed next to the
@@ -172,42 +181,38 @@ _(my_value).must_rematch :c1, :assert_something, 'my message'
 _(my_value).must_rematch :c1, 'my message', :assert_something
 ```
 
-### Suggestions
+## Suggestions
 
-#### Test case keys
+### Test case keys
 
 Rematch assertions/expectations are typical Minitest assertions/expectations, with the extra feature to store and retrieve
 automatically the expected value from a key-value store.
-
-Before `rematch v2.0` the keys were based on the sequential position of the test cases inside the test block, but that was very
-fragile and need to rebuild the store every time you move around/add/remove cases.
-
-Since `rematch v2.0` you must pass an arbitrary key as the first argument to any rematch assertion/expectation.
 
 The key must be unique inside the test block because it's used to identify each specific test case. You can use any value that
 could be used as a Hash key (e.g. symbol, string, integer, and almost everything), however it's much more practical to use
 descriptive symbols for each test case or a no-brainer series of symbols (e.g. :c1, :c2, c3, ...). That will be also very useful
 to match the case against the store file, when you want to check the stored values.
 
-#### Check the stores
+### Check the stores
 
 Rematch stores the expected value for you: whatever is returned by your test expression is what will get stored and compared the
 next times. That is handy when you know that your code is working properly. If you are not so sure, you should check the stored
 values by taking a look at the store files, which are very readable `YAML` files.
 
-#### Update flow
+### Update flow
 
-When you first run your new tests, `rematch` stores whatever value they return under the storage case key that is derived from the
-test description.
+When you first run your new tests, `rematch` stores whatever value they return under the storage case key.
 
 If you change your code later, you should ensure that the old tests pass before changing the test files. If there is some expected
 failure, you should reconcile them, usually by temporarily replacing the `assert_rematch`/`must_rematch` calls that you want to
 update with `store_assert_rematch`/`store_must_rematch` respectively.
 
 From time to time, you may want to rebuild a totally passing test suite just to cleanup orphan keys and reorganizing the tests in
-a better order. IMPORTANT: DO NOT REBUILD unless everything passes, or you will have stored the wrong actual values!
+a better order.
 
-#### Dos and don'ts
+IMPORTANT: DO NOT REBUILD unless everything passes, or you will have stored the wrong actual values!
+
+### Dos and don'ts
 
 - Use `rematch` with large output or structures that are mostly generated outside your test code. Rematch can declutter your tests
   and [update the stored values](#how-to-update-the-stored-values) in seconds. For example:
@@ -237,26 +242,19 @@ a better order. IMPORTANT: DO NOT REBUILD unless everything passes, or you will 
     _(square_root(10_000)).must_equal 100
     ```
 
-#### Test the whole instead of parts
+### Test the whole instead of parts
 
 - Without `rematch` if you want to avoid adding clutter and future maintenance, you have to pinpoint the parts worth testing out
   of a big output or structure. That requires deciding which part is important and which is not, and writing the code to extract
   the parts and testing each one of them.
 - With `rematch` you can just relax and test the whole output/structure with a single deadly-simple line: way simpler, more
   effective, without clutter and maintenance free!
-
-## Installation
-
-Rematch works as a `minitest` plugin, so just add it to your `Gemfile` (usually in the `:test` group) or require it if you don't
-use `bundler`, and minitest will find and load it.
-
-After that you can just use its assertions/expectations in your tests.
-
+  
 ## Caveats
 
 - You can use `rematch` with any value, even your own complex objects and even without serialization, however since they get
   compared by minitest, they must implement a `==` method like any other native ruby object.
-- If you have to run the same tests on different ruby versions, the `.rematch` file may not be read the same way in different
+- If you have to run the same tests on different ruby versions, the rematch file may not be read the same way in different
   versions due to `Psych` changes between versions. That should only happen in complex objects that use `ivars`. A work-around the
   issue is storing the raw data underlying the object. For example a `.to_hash` or `.attributes` would store only plain hashes
   instead of the whole instance with its variables, and that is good enough for testing.
@@ -265,7 +263,7 @@ After that you can just use its assertions/expectations in your tests.
 
 ### Ruby version
 
-This repo is tested from `2.5+` for practical CI reasons, but it should work also from `2.1+`.
+This repo is tested from `3.1+` for practical CI reasons, but it should work also from `2.1+`.
 
 ### Versioning
 

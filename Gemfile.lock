@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rematch (3.0.0)
+    rematch (3.1.0)
 
 GEM
   remote: https://rubygems.org/

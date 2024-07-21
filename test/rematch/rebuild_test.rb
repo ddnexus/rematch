@@ -6,7 +6,7 @@ require 'fileutils'
 describe 'rematch/rebuild' do
   it 'refreshes the value with check_rebuild' do
     Rematch.rebuild = true
-    store_path = "#{__FILE__}#{Rematch::DEFAULT[:ext]}"
+    store_path = "#{__FILE__}#{Rematch::CONFIG[:ext]}"
     Rematch.check_rebuild(store_path)
     Rematch.rebuild = nil
     _(store_path).path_wont_exist

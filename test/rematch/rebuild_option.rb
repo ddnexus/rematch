@@ -9,7 +9,7 @@ require_relative '../test_helper'
 
 describe 'rematch/rebuild_option' do
   it 'rebuilds the store' do
-    store_path = "#{__FILE__}#{Rematch::DEFAULT[:ext]}"
+    store_path = "#{__FILE__}#{Rematch::CONFIG[:ext]}"
     _(store_path).path_wont_exist   # the rebuild should have deleted the file
     _('store_value').must_rematch :store
     _(store_path).path_must_exist   # the test above should have created the file

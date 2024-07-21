@@ -1,4 +1,19 @@
 ---
+rematch/stored_test_0003_should_fail:
+  :right1: right_value
+  :right2: right_value
+rematch/stored_test_0004_should_force_rematch:
+  :sa: store-rematch (right_value)
+  :se: store-rematch (right_value)
+rematch/stored_test_0002_accepts_mixed_arguments:
+  :k1: method first
+  :k2: method first
+  :k3: message first
+  :k4: message first
+  :k5: only method
+  :k6: only method
+  :k7: only message
+  :k8: only message
 rematch/stored_test_0001_rematches_entry_with_stored_value:
   :string_e: stored_value
   :string_a: stored_value
@@ -34,18 +49,3 @@ rematch/stored_test_0001_rematches_entry_with_stored_value:
       - 5
   :time_e: 2021-05-16 12:33:31.101458598 +00:00
   :time_a: 2021-05-16 12:33:31.101458598 +00:00
-rematch/stored_test_0002_accepts_mixed_arguments:
-  :k1: method first
-  :k2: method first
-  :k3: message first
-  :k4: message first
-  :k5: only method
-  :k6: only method
-  :k7: only message
-  :k8: only message
-rematch/stored_test_0003_should_fail:
-  :wrong1: wrong_value
-  :wrong2: wrong_value
-rematch/stored_test_0004_should_force_rematch:
-  :sa: store-rematch (right_value)
-  :se: store-rematch (right_value)
