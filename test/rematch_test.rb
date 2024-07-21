@@ -10,8 +10,5 @@ describe 'rematch' do
     it 'defines the same version in CHANGELOG.md' do
       _(File.read('CHANGELOG.md')).must_match "## Version #{Rematch::VERSION}"
     end
-    it 'defines the same version in .github/.env' do
-      _(File.read('lib/rematch.rb')).must_match "VERSION = '#{Rematch::VERSION}'"
-    end
   end
 end
