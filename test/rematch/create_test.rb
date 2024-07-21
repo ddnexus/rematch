@@ -3,7 +3,7 @@
 require_relative '../test_helper'
 
 describe 'rematch/create' do
-  store_file = "#{__FILE__}#{Rematch::DEFAULT[:ext]}"
+  store_file = "#{__FILE__}#{Rematch::CONFIG[:ext]}"
   it 'creates the store and the entry' do
     File.delete(store_file) if File.file?(store_file)
     _('a new value').must_rematch :new_val
