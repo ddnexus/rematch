@@ -1,5 +1,11 @@
 # CHANGELOG
-              
+
+## Version 3.1.0
+
+- Add store_warning and Rematch.skip_warning; remove store method
+- Remove useless test case
+- Rename the DEFAULT constant to CONFIG
+
 ## Version 3.0.0
 
 - Refactor keys and default extension

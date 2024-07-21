@@ -5,7 +5,7 @@ require 'fileutils'
 
 # Handles the key/value store for each test
 class Rematch
-  VERSION = '3.0.0'
+  VERSION = '3.1.0'
   CONFIG  = { ext: '.yaml' }  # rubocop:disable Style/MutableConstant
 
   @rebuild      = false  # rebuild the store?
