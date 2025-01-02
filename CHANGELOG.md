@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Version 3.2.0
+
+- Add the Rematch::Store to override the YAML::Store load. Psych uses safe_load now (we use only trusted content)
+- Remove gem and code relative to `rake-manifest`
+- Add `pstore` and `logger` to the Gemfile (will not be core libs from ruby 3.5)
+- Improve ci
+
 ## Version 3.1.0
 
 - Add store_warning and Rematch.skip_warning; remove store method
@@ -12,8 +19,8 @@
   - Changed default extension for rematch files to .yml
   - Rematch::EXT is now Rematch::DEFAULT[:ext], so it doesn't trigger the ruby warning when you change it
   - Rematch::DEFAULT[:ext] default value is `.yml` now
-  - The test keys in the storage files have no "#", ":" and spaces... only "_", so they are easier to parse even with clumsy 
-    yaml parsers/highlighters (in case you want to inspect them, they will look right and easier to read)
+  - The test keys in the storage files have no "#", ":" and spaces... only "_", so they are easier to parse even with clumsy yaml
+    parsers/highlighters (in case you want to inspect them, they will look right and easier to read)
 
 ## Version 2.1.0
 
@@ -73,7 +80,7 @@
 
 ## Version 1.3.0
 
-###  Changes
+### Changes
 
 - added support for message argument and mixed arguments
 - better tests examples and documentation
@@ -88,7 +95,7 @@
 
 ## Version 1.2.0
 
-###  Changes
+### Changes
 
 - Refactoring of assertions (improvement and fixes)
 - Strictened Rubocop
@@ -113,7 +120,8 @@
 ### Commits
 
 - [80fc503](http://github.com/ddnexus/rematch/commit/80fc503): added equality argument
-- [a325562](http://github.com/ddnexus/rematch/commit/a325562): simplified naming of option: --rematch-refresh-only to --rematch-rebuild; updated README and tests
+- [a325562](http://github.com/ddnexus/rematch/commit/a325562): simplified naming of option: --rematch-refresh-only to
+  --rematch-rebuild; updated README and tests
 - [187e9ab](http://github.com/ddnexus/rematch/commit/187e9ab): improved README and gmspec description
 - [ff273fc](http://github.com/ddnexus/rematch/commit/ff273fc): added gemspec to the Gemfile
 - [01d3f38](http://github.com/ddnexus/rematch/commit/01d3f38): Minor README improvements

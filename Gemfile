@@ -4,12 +4,10 @@ source 'https://rubygems.org'
 
 gemspec
 
-# we cannot use gemspec here because it would load rematch before simplecov so missing files from coverage
-# gemspec
+gem 'irb'
 gem 'mutex_m'
 gem 'rake'
-gem 'rake-manifest'
-gem 'readline-ext' # temporary fix for RM 3.3.2 console with ruby >= 3.3.0
+gem 'reline'
 
 group :test do
   gem 'minitest'
