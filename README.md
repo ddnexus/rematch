@@ -123,7 +123,7 @@ or failing the test as usual.
 
 ### How to update the stored values
 
-With or without `rematch`, when your code change you need to update the stored values with the new values from your current code.
+With or without `rematch`, when your code changes you need to update the stored values with the new values from your current code.
 With `rematch` you don't need to edit the test files, instead you have a few options:
 
 - Run the test(s) with the `--rematch-rebuild` option: it will rebuild the store files for all the tests that you run.
@@ -263,7 +263,7 @@ IMPORTANT: DO NOT REBUILD unless everything passes, or you will have stored the 
 
 ### Ruby version
 
-This repo is tested from `3.1+` for practical CI reasons, but it should work also from `2.1+`.
+This repo is tested from `3.2+` for practical CI reasons, but it should work also from `2.1+`.
 
 ### Versioning
 

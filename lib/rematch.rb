@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'yaml/store'
 require 'fileutils'
+require_relative 'rematch/store'
 
 # Handles the key/value store for each test
 class Rematch
-  VERSION = '3.1.0'
+  VERSION = '3.2.0'
   CONFIG  = { ext: '.yaml' }  # rubocop:disable Style/MutableConstant
 
   @rebuild      = false  # rebuild the store?
@@ -29,7 +29,7 @@ class Rematch
   def initialize(path:, id:)
     store_path = "#{path}#{CONFIG[:ext]}"
     self.class.check_rebuild(store_path)
-    @store = YAML::Store.new(store_path, true)
+    @store = Store.new(store_path, true)
     @id    = id.tr('#: ', '_')       # easier key string for clumsy yaml parsers/highlighters
   end
 

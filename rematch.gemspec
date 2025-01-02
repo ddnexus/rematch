@@ -16,10 +16,12 @@ Gem::Specification.new do |s|
                   'you can do it the easy way, possibly saving many hours of boring maintenance work!'
   s.homepage    = 'https://github.com/ddnexus/rematch'
   s.license     = 'MIT'
-  s.files       = File.read('rematch.manifest').split
+  s.files       = Dir['lib/**/*.rb'] + ['LICENSE.txt']
   s.metadata    = { 'rubygems_mfa_required' => 'true',
                     'homepage_uri'          => 'https://github.com/ddnexus/rematch',
                     'bug_tracker_uri'       => 'https://github.com/ddnexus/rematch/issues',
                     'changelog_uri'         => 'https://github.com/ddnexus/rematch/blob/master/CHANGELOG.md' }
-  s.required_ruby_version = '> 3.1' # Ruby EOL
+  s.add_dependency 'logger'
+  s.add_dependency 'pstore'
+  s.required_ruby_version = '> 3.2' # Ruby EOL
 end
