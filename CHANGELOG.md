@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Version 3.2.1
+
+- Update to minitest 6: 
+  - update gems 
+  - simplify test and coverage setup
+- Rename Test RM config
+
 ## Version 3.2.0
 
 - Add the Rematch::Store to override the YAML::Store load. Psych uses safe_load now (we use only trusted content)

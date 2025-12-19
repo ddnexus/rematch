@@ -1,13 +1,8 @@
 # frozen_string_literal: true
 
-SimpleCov.formatter = if ENV['COVERAGE_REPORT'] == 'true'
-                        SimpleCov::Formatter::HTMLFormatter
-                      else
-                        SimpleCov::Formatter::SimpleFormatter
-                      end
-
 SimpleCov.start do
-  command_name "Task##{$PROCESS_ID}"  # best way to get a different id for the specific task
-  merge_timeout 60
+  track_files 'gem/lib/**/*.rb'
+  add_filter %w[test]
   enable_coverage :branch
+  minimum_coverage line: 100, branch: 100
 end
