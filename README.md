@@ -109,7 +109,7 @@ end
 ## Installation
 
 Rematch works as a `minitest` plugin, so just add it to your `Gemfile` (usually in the `:test` group) or require it if you don't
-use `bundler`, and minitest will find and load it.
+use `bundler`, and minitest < 6.0 should load it automatically. If minitest >= 6.0 you should require it manually in your test_helper.rb with `Minitest.load :rematch`.
 
 After that you can just use its assertions/expectations in your tests.
  

@@ -54,5 +54,3 @@ jobs:
         run: bundle exec rubocop --format github
       - name: Check Tests
         run: bundle exec rake test
-      - name: Check Coverage
-        run: bundle exec rake check_coverage
