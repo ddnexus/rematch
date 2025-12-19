@@ -22,7 +22,6 @@ function bump(){
 	sed -i "0,/$current/{s/$current/$version/}" "$1"
 }
 
-bump "$ROOT/.github/.env"
 bump "$ROOT/lib/rematch.rb"
 
 # Update CHANGELOG
@@ -49,6 +48,6 @@ git diff -U0
 # Optional commit
 read -rp 'Do you want to commit the changes? (y/n)> ' input
 if [[ $input = y ]] || [[ $input = Y ]]; then
-  git add .github/.env lib/rematch.rb CHANGELOG.md
+  git add lib/rematch.rb CHANGELOG.md
   git commit -m "Version $ver"
 fi
