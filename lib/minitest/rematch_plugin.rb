@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rematch'
-require 'minitest/spec'
 
 # Implement the minitest plugin
 module Minitest
@@ -49,24 +48,10 @@ module Minitest
       raise Minitest::Assertion, '[rematch] the value has been stored: remove the "store_" prefix to pass the test'
     end
   end
-  # Reopen the Minitest::Expectation class for Minitest 6 compatibility
-  # or use infect_an_assertion for Minitest 5
-  require 'minitest/spec'
 
-  if defined?(Expectations) && Expectations.respond_to?(:infect_an_assertion)
-    module Expectations # rubocop:disable Style/Documentation
-      infect_an_assertion :assert_rematch, :must_rematch
-      infect_an_assertion :store_assert_rematch, :store_must_rematch
-    end
-  else
-    class Expectation # rubocop:disable Style/Documentation
-      def must_rematch(key, *)
-        ctx.assert_rematch(key, target, *)
-      end
-
-      def store_must_rematch(key, *)
-        ctx.store_assert_rematch(key, target, *)
-      end
-    end
+  # Register expectations only if minitest/spec is loaded; ensure the right class in 6.0 and < 6.0
+  if (expectation_class = defined?(Spec) && (defined?(Expectation) ? Expectation : Expectations))
+    expectation_class.infect_an_assertion :assert_rematch, :must_rematch
+    expectation_class.infect_an_assertion :store_assert_rematch, :store_must_rematch
   end
 end
