@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 3.2.2
+
+- Avoid loading expectations unless the user require minitest/spec
+
 ## Version 3.2.1
 
 - Update to minitest 6: 
