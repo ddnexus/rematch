@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Version 4.0.0
+
+- Simplify usage and store readability:- Remove the mandatory unique key for test cases.
+- Improve the store-file structure and readability by test line
+- Implement tidy store automation:
+  - remove orphan entries
+  - keep the file ordered like the test file
+
 ## Version 3.2.2
 
 - Avoid loading expectations unless the user require minitest/spec
