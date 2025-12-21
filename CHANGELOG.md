@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 4.1.0
+
+- Added the id option for using rematch in loops
+
 ## Version 4.0.0
 
 - Simplify usage and store readability:- Remove the mandatory unique key for test cases.
