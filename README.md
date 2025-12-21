@@ -8,12 +8,11 @@
 
 ## Overview
 
-**Declutter your test files from large hardcoded data and update them automatically when your code changes.**
+**Declutter your test files and automatically update expected values when your code changes.**
 
-Instead of copying and pasting large outputs or big ruby structures into all the affected test files every time your code changes,
-you can do it the easy way, possibly saving many hours of boring maintenance work!
+Don't copy-paste large outputs or structures into your tests. Rematch saves you hours of tedious maintenance by storing expected values in separate files and verifying them for you.
 
-### Instead of maintaining this cluttered mess...
+### Instead of this mess...
 
 ```ruby
 it 'generates the pagination nav tag' do
@@ -97,195 +96,100 @@ end
 
 ```ruby
 it 'generates the pagination nav tag' do
-  assert_rematch :nav, view.pagy_nav(pagy)
+  # Assertion
+  assert_rematch view.pagy_nav(pagy)
+  
+  # Expectation (standard)
+  _(view.pagy_nav(pagy)).must_rematch
+  
+  # Expectation (fluent / RSpec-style)
+  value(view.pagy_nav(pagy)).must_rematch
+  expect(view.pagy_nav(pagy)).to_rematch
 end
-it 'generates the metadata hash' do
-  assert_rematch :meta, controller.pagy_metadata
-end
-# :nav and :meta are arbitrary keys for storing the test case 
-# they must be unique inside the test block
 ```
 
 ## Installation
 
-Rematch works as a `minitest` plugin, so just add it to your `Gemfile` (usually in the `:test` group) or require it if you don't
-use `bundler`, and minitest < 6.0 should load it automatically. If minitest >= 6.0 you should require it manually in your test_helper.rb with `Minitest.load :rematch`.
+Add `rematch` to your `Gemfile` (usually in the `:test` group).
+Minitest < 6.0 loads it automatically. For Minitest >= 6.0, add `Minitest.load :rematch` to your `test_helper.rb`.
 
-After that you can just use its assertions/expectations in your tests.
- 
 ## Usage
 
-### How does it work?
+### How it works
 
-The first time a new rematch test is run, its returned value is recorded in a `*.yaml` `YAML::Store` file (placed next to the
-test file). The next times the same test will run, its fresh returned value will be rematched against the recorded value, passing
-or failing the test as usual.
+The first time a test runs, Rematch records the returned value in a `*.yaml` file next to the test. The key is automatically generated from the line number and a test ID. Subsequent runs compare the fresh value against the recording, passing or failing as usual.
 
-### How to update the stored values
+### Updating stored values
 
-With or without `rematch`, when your code changes you need to update the stored values with the new values from your current code.
-With `rematch` you don't need to edit the test files, instead you have a few options:
+When your code changes, you can update the store without editing test files:
 
-- Run the test(s) with the `--rematch-rebuild` option: it will rebuild the store files for all the tests that you run.
-  For example:
-
+1.  **Rebuild all:** Run tests with the `--rematch-rebuild` option.
     ```sh
-    rake test TESTOPTS=--rematch-rebuild                # update all
-    ruby -Ilib:test test/my_test.rb --rematch-rebuild   # update just one
+    rake test TESTOPTS=--rematch-rebuild
     ```
+    :warning: **WARNING:** Only use this when you are sure the new output is correct.
 
-  :warning: **WARNING**: Don't forget the  `--rematch-rebuild` option in some script that runs for actual testing or it will never
-  fail!
-- You can manually delete the specific store files (e.g. `frontend_test.rb.yaml`) and re-run the test(s).
-- You can temporarily replace the `assert_rematch`/`must_rematch` calls that you want to update
-  with `store_assert_rematch`/`store_must_rematch` respectively. That will store the new value passed to the assertion/expectation
-  and will fail the test (in order to avoid to store every time any value). Just restore the
-  original `assert_rematch`/`must_rematch` call and the test will pass.
+2.  **Manual deletion:** Delete the specific `*.yaml` store file and re-run the test.
+
+3.  **Selective update:** Temporarily replace the check with its `store_` counterpart:
+  *   `assert_rematch` &rarr; `store_assert_rematch`
+  *   `must_rematch` &rarr; `store_must_rematch`
+  *   `to_rematch` &rarr; `store_to_rematch`
+
+    This stores the new value and fails the test (to prevent committing the `store_` call). Revert to the original method to pass the test.
 
 ### Assertions and Expectations
 
-Rematch adds `assert_rematch` and `must_rematch` to `minitest`. By default, they use `assert_equal` or `assert_nil` (for `nil`
-values) behind the scenes after storing/retrieving the value to compare.
-
-However you can use any other _equality assertion_ that better suits your needs. Here is an example
-with `assert_equal_unordered` (provided by `minitest-unordered` plugin):
+Rematch wraps `assert_equal` (or `assert_nil`) by default. You can also specify a different equality assertion (e.g., `assert_equal_unordered`).
 
 ```ruby
-# instead of
-assert_equal_unordered [:big, :expected, :enumerable, :collection, ...], my_enum_collection
+# Standard usage
+assert_rematch actual
+_(actual).must_rematch
 
-# you can rematch it like: 
-assert_rematch :my_key, my_enum_collection, :assert_equal_unordered
-# or
-_(my_enum_collection).must_rematch :my_key, :assert_equal_unordered
+# With custom assertion
+assert_rematch actual, :assert_equal_unordered
+_(actual).must_rematch :assert_equal_unordered
+expect(actual).to_rematch :assert_equal_unordered
+
+# With message
+assert_rematch actual, 'message'
+_(actual).must_rematch 'message'
 ```
 
-**Notice**: The symbol passed must identify an **equality assertion** method, i.e. the method must use a form of comparison of the
-whole stored value, and must be an assertion method like `:assert_something` and not an expectation method like `:must_something`.
-
-Like any other minitest assertion/expectation, the rematch methods accept also an optional message argument (String or Proc) that
-gets forwarded to the used equality assertion method. Notice that the order of the assertion and message arguments is conveniently
-flexible. The following are all the possible ways you can use the rematch methods:
-
-```ruby
-assert_rematch :c1, my_value
-assert_rematch :c1, my_value, :assert_something
-assert_rematch :c1, my_value, 'my message'
-assert_rematch :c1, my_value, :assert_something, 'my message'
-assert_rematch :c1, my_value, 'my message', :assert_something
-
-_(my_value).must_rematch :c1
-_(my_value).must_rematch :c1, :assert_something
-_(my_value).must_rematch :c1, 'my message'
-_(my_value).must_rematch :c1, :assert_something, 'my message'
-_(my_value).must_rematch :c1, 'my message', :assert_something
-```
+**Note:** The custom assertion must be a symbol (e.g., `:assert_something`). The order of arguments (assertion symbol vs message) is flexible.
 
 ## Suggestions
 
-### Test case keys
+*   **Check the stores:** If you are unsure about the output, check the readable `*.yaml` files. Keys starting with `L<num>` make it easy to find the corresponding test case at the line indicated.
+*   **Update flow:** Ensure tests pass before rebuilding. If there are expected failures, use the `store_*` methods to reconcile specific tests.
+*   **Test the whole:** Don't pick apart complex structures. Test the whole output with a single line. Rematch handles the complexity for you.
+*   **Dos and Don'ts:** Use Rematch for large, stable outputs (HTML, JSON, Hashes). Stick to standard assertions for simple values (integers, short strings).
 
-Rematch assertions/expectations are typical Minitest assertions/expectations, with the extra feature to store and retrieve
-automatically the expected value from a key-value store.
-
-The key must be unique inside the test block because it's used to identify each specific test case. You can use any value that
-could be used as a Hash key (e.g. symbol, string, integer, and almost everything), however it's much more practical to use
-descriptive symbols for each test case or a no-brainer series of symbols (e.g. :c1, :c2, c3, ...). That will be also very useful
-to match the case against the store file, when you want to check the stored values.
-
-### Check the stores
-
-Rematch stores the expected value for you: whatever is returned by your test expression is what will get stored and compared the
-next times. That is handy when you know that your code is working properly. If you are not so sure, you should check the stored
-values by taking a look at the store files, which are very readable `YAML` files.
-
-### Update flow
-
-When you first run your new tests, `rematch` stores whatever value they return under the storage case key.
-
-If you change your code later, you should ensure that the old tests pass before changing the test files. If there is some expected
-failure, you should reconcile them, usually by temporarily replacing the `assert_rematch`/`must_rematch` calls that you want to
-update with `store_assert_rematch`/`store_must_rematch` respectively.
-
-From time to time, you may want to rebuild a totally passing test suite just to cleanup orphan keys and reorganizing the tests in
-a better order.
-
-IMPORTANT: DO NOT REBUILD unless everything passes, or you will have stored the wrong actual values!
-
-### Dos and don'ts
-
-- Use `rematch` with large output or structures that are mostly generated outside your test code. Rematch can declutter your tests
-  and [update the stored values](#how-to-update-the-stored-values) in seconds. For example:
-
-    ```ruby
-    # cluttered and hard to update
-    assert_equal '...big output spanning multiple lines ...', big_helper(a: 'a')
-    assert_equal({ big: { deeply: 'nested', complicated: 'structure'}, ...}, big_struct(b: 'b'))
-    
-    # this is better
-    assert_rematch :helper, big_helper(a: 'a')
-    assert_rematch :struct, struct(b: 'b')
-    # or this
-    _(big_helper(a: 'a')).must_rematch :helper
-    _(big_struct(b: 'b')).must_rematch :struct
-    ```
-
-- Don't use `rematch` for short specific outputs mostly dependent on the test code. For example:
-
-    ```ruby
-    # less readable and harder to update 
-    assert_rematch :root, square_root(100) 
-    _(square_root(10_000)).must_rematch :root
-    
-    # this is better
-    assert_equal 10, square_root(100) 
-    _(square_root(10_000)).must_equal 100
-    ```
-
-### Test the whole instead of parts
-
-- Without `rematch` if you want to avoid adding clutter and future maintenance, you have to pinpoint the parts worth testing out
-  of a big output or structure. That requires deciding which part is important and which is not, and writing the code to extract
-  the parts and testing each one of them.
-- With `rematch` you can just relax and test the whole output/structure with a single deadly-simple line: way simpler, more
-  effective, without clutter and maintenance free!
-  
 ## Caveats
 
-- You can use `rematch` with any value, even your own complex objects and even without serialization, however since they get
-  compared by minitest, they must implement a `==` method like any other native ruby object.
-- If you have to run the same tests on different ruby versions, the rematch file may not be read the same way in different
-  versions due to `Psych` changes between versions. That should only happen in complex objects that use `ivars`. A work-around the
-  issue is storing the raw data underlying the object. For example a `.to_hash` or `.attributes` would store only plain hashes
-  instead of the whole instance with its variables, and that is good enough for testing.
+*   **Equality:** Stored values are compared using standard Minitest assertions. Custom objects must implement `==`.
+*   **Ruby Versions:** Complex objects with `ivars` might serialize differently across Ruby versions due to `Psych`. Store raw data (hashes/attributes) to avoid this.
 
 ## Repository Info
 
 ### Ruby version
 
-This repo is tested from `3.2+` for practical CI reasons, but it should work also from `2.1+`.
+Tested on `3.2+`, but compatible with `2.1+`.
 
 ### Versioning
 
-Rematch follows the [Semantic Versioning 2.0.0](https://semver.org/). Please, check
-the [Changelog](https://github.com/ddnexus/rematch/blob/master/CHANGELOG.md) for breaking changes introduced by mayor versions.
+Follows [Semantic Versioning 2.0.0](https://semver.org/). See the [Changelog](https://github.com/ddnexus/rematch/blob/master/CHANGELOG.md).
 
 ### Contributions
 
-Pull Requests are welcome!
-
-If you Create A Pull Request, please ensure that the "All checks have passed" indicator gets green light on the Pull Request page.
-That means that the tests passed and Codecov and Rubocop are happy.
+Pull Requests are welcome! Ensure tests, Codecov, and Rubocop pass.
 
 ### Branches
 
-The `master` branch is the latest rubygem-published release. It also contains docs and comment changes that don't affect the
-published code. It is never force-pushed.
-
-The `dev` branch is the development branch with the new code that will be merged in the next release. It could be force-pushed.
-
-Expect any other branch to be experimental, force-pushed, rebased and/or deleted even without merging.
+*   `master`: Latest published release. Never force-pushed.
+*   `dev`: Development branch. May be force-pushed.
 
 ## License
 
-This project is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+[MIT License](https://opensource.org/licenses/MIT).

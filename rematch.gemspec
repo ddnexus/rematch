@@ -9,11 +9,10 @@ Gem::Specification.new do |s|
   s.version     = Rematch::VERSION
   s.authors     = ['Domizio Demichelis']
   s.email       = ['dd.nexus@gmail.com']
-  s.summary     = 'Declutter your test files from large hardcoded data ' \
-                  'and update them automatically when your code changes'
-  s.description = 'Instead of copying and pasting large outputs or big ruby structures ' \
-                  'into all the affected test files every time your code change, ' \
-                  'you can do it the easy way, possibly saving many hours of boring maintenance work!'
+  s.summary     = 'Declutter your test files and automatically update expected values.'
+  s.description = 'Rematch declutters your tests by storing large outputs or structures ' \
+                  'in separate files. It verifies them automatically and enables easy ' \
+                  'updates when your code changes, eliminating tedious copy-paste maintenance.'
   s.homepage    = 'https://github.com/ddnexus/rematch'
   s.license     = 'MIT'
   s.files       = Dir['lib/**/*.rb'] + ['LICENSE.txt']

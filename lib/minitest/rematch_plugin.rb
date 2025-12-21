@@ -22,28 +22,27 @@ module Minitest
     # Create the rematch object for each test
     def after_setup
       super
-      @rematch = Rematch.new(path: method(name).source_location.first,
-                             id: "#{self.class.name}##{name}")
+      @rematch = Rematch.new(self)
     end
   end
 
   # Reopen the minitest module
   module Assertions
     # Main assertion
-    def assert_rematch(key, actual, *args)
+    def assert_rematch(actual, *args)
       assertion = :assert_equal
       message   = nil
       args.each { |arg| arg.is_a?(Symbol) ? assertion = arg : message = arg }
       if actual.nil?   # use specific assert_nil after deprecation of assert_equal nil
-        assert_nil @rematch.rematch(key, actual), message
+        assert_nil @rematch.rematch(actual), message
       else
-        send assertion, @rematch.rematch(key, actual), actual, message  # assert that the stored value is the same actual value
+        send assertion, @rematch.rematch(actual), actual, message  # assert that the stored value is the same actual value
       end
     end
 
     # Temporarily used to store the actual value, useful for reconciliation of expected changed values
-    def store_assert_rematch(key, actual, *_args)
-      @rematch.rematch(key, actual, overwrite: true)
+    def store_assert_rematch(actual, *_args)
+      @rematch.rematch(actual, overwrite: true)
       # Always fail after storing, forcing the restore of the original assertion/expectation
       raise Minitest::Assertion, '[rematch] the value has been stored: remove the "store_" prefix to pass the test'
     end
@@ -51,7 +50,9 @@ module Minitest
 
   # Register expectations only if minitest/spec is loaded; ensure the right class in 6.0 and < 6.0
   if (expectation_class = defined?(Spec) && (defined?(Expectation) ? Expectation : Expectations))
-    expectation_class.infect_an_assertion :assert_rematch, :must_rematch
-    expectation_class.infect_an_assertion :store_assert_rematch, :store_must_rematch
+    expectation_class.infect_an_assertion :assert_rematch, :must_rematch, :reverse
+    expectation_class.alias_method :to_rematch, :must_rematch # to use with expect().to_rematch
+    expectation_class.infect_an_assertion :store_assert_rematch, :store_must_rematch, :reverse
+    expectation_class.alias_method :store_to_rematch, :store_must_rematch # to use with expect().store_to_rematch
   end
 end
