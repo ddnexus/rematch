@@ -16,6 +16,14 @@ describe 'rematch/stored' do
     _(Time.parse('2021-05-16 12:33:31.101458598 +00:00')).must_rematch
     assert_rematch Time.parse('2021-05-16 12:33:31.101458598 +00:00')
   end
+  it 'rematches using the id option' do
+    # Useful for loops or parameterized tests where the line number is the same
+    %w[a b].each do |char|
+      assert_rematch char, id: "assert_#{char}"
+      _(char).must_rematch id: "must_#{char}"
+      expect(char).to_rematch id: "to_#{char}"
+    end
+  end
   it 'accepts mixed arguments' do
     _('method first').must_rematch :assert_equal, 'mixed arguments'
     assert_rematch 'method first', :assert_equal, 'mixed arguments'
