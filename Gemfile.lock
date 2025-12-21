@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rematch (3.2.2)
+    rematch (4.0.0)
       logger
       pstore
 

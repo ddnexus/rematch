@@ -1,51 +1,47 @@
 ---
-rematch/stored_test_0003_should_fail:
-  :right1: right_value
-  :right2: right_value
-rematch/stored_test_0004_should_force_rematch:
-  :sa: store-rematch (right_value)
-  :se: store-rematch (right_value)
-rematch/stored_test_0002_accepts_mixed_arguments:
-  :k1: method first
-  :k2: method first
-  :k3: message first
-  :k4: message first
-  :k5: only method
-  :k6: only method
-  :k7: only message
-  :k8: only message
-rematch/stored_test_0001_rematches_entry_with_stored_value:
-  :string_e: stored_value
-  :string_a: stored_value
-  :range_e: !ruby/range
-    begin: 5
-    end: 34
-    excl: false
-  :range_a: !ruby/range
-    begin: 5
-    end: 34
-    excl: false
-  :array_e:
-  - 1
-  - 4
-  - 5
-  - 6
-  :array_a:
-  - 1
-  - 4
-  - 5
-  - 6
-  :nested_hash_e:
-    :a: 23
-    :b:
-      :c:
-      - a
-      - 5
-  :nested_hash_a:
-    :a: 23
-    :b:
-      :c:
-      - a
-      - 5
-  :time_e: 2021-05-16 12:33:31.101458598 +00:00
-  :time_a: 2021-05-16 12:33:31.101458598 +00:00
+L8 ea80422ffbc0a979cbab138969bf1562ca0d316d: stored_value
+L9 ea80422ffbc0a979cbab138969bf1562ca0d316d: stored_value
+L10 ea80422ffbc0a979cbab138969bf1562ca0d316d: !ruby/range
+  begin: 5
+  end: 34
+  excl: false
+L11 ea80422ffbc0a979cbab138969bf1562ca0d316d: !ruby/range
+  begin: 5
+  end: 34
+  excl: false
+L12 ea80422ffbc0a979cbab138969bf1562ca0d316d:
+- 1
+- 4
+- 5
+- 6
+L13 ea80422ffbc0a979cbab138969bf1562ca0d316d:
+- 1
+- 4
+- 5
+- 6
+L14 ea80422ffbc0a979cbab138969bf1562ca0d316d:
+  :a: 23
+  :b:
+    :c:
+    - a
+    - 5
+L15 ea80422ffbc0a979cbab138969bf1562ca0d316d:
+  :a: 23
+  :b:
+    :c:
+    - a
+    - 5
+L16 ea80422ffbc0a979cbab138969bf1562ca0d316d: 2021-05-16 12:33:31.101458598 +00:00
+L17 ea80422ffbc0a979cbab138969bf1562ca0d316d: 2021-05-16 12:33:31.101458598 +00:00
+L20 71e6f4b4b5ab11498470972e444f0b8126d9dcf3: method first
+L21 71e6f4b4b5ab11498470972e444f0b8126d9dcf3: method first
+L22 71e6f4b4b5ab11498470972e444f0b8126d9dcf3: message first
+L23 71e6f4b4b5ab11498470972e444f0b8126d9dcf3: message first
+L24 71e6f4b4b5ab11498470972e444f0b8126d9dcf3: only method
+L25 71e6f4b4b5ab11498470972e444f0b8126d9dcf3: only method
+L26 71e6f4b4b5ab11498470972e444f0b8126d9dcf3: only message
+L27 71e6f4b4b5ab11498470972e444f0b8126d9dcf3: only message
+L32 f3d01eaf2f8d5bec40b1118890329480aa1b8999: right_value
+L36 f3d01eaf2f8d5bec40b1118890329480aa1b8999: right_value
+L42 7a4b76757995a5305d29d6960b9c5b2e715adb9d: store-rematch (right_value)
+L46 7a4b76757995a5305d29d6960b9c5b2e715adb9d: store-rematch (right_value)

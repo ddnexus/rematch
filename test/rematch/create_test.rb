@@ -3,15 +3,14 @@
 require_relative '../test_helper'
 
 describe 'rematch/create' do
-  store_file = "#{__FILE__}#{Rematch::CONFIG[:ext]}"
+  store_path = "#{__FILE__}#{Rematch::CONFIG[:ext]}"
   it 'creates the store and the entry' do
-    File.delete(store_file) if File.file?(store_file)
-    _('a new value').must_rematch :new_val
-    _(store_file).path_must_exist
-    _(File.read(store_file)).must_equal <<~STORE
+    File.delete(store_path) if File.file?(store_path)
+    expect('a new value').to_rematch
+    value(store_path).path_must_exist
+    _(File.read(store_path)).must_equal <<~STORE
       ---
-      rematch/create_test_0001_creates_the_store_and_the_entry:
-        :new_val: a new value
+      L9 770340a3ba63a77e0b0cc28e2ab660f04267ab60: a new value
     STORE
   end
 end
