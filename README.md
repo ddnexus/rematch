@@ -159,6 +159,18 @@ _(actual).must_rematch 'message'
 
 **Note:** The custom assertion must be a symbol (e.g., `:assert_something`). The order of arguments (assertion symbol vs message) is flexible.
 
+### Parameterized Tests (Loops)
+
+Since Rematch uses line numbers to generate keys, assertions inside loops or blocks need a unique identifier to avoid collisions. Use the id: option:
+
+```ruby
+[:alpha, :beta].each do |val|
+assert_rematch val, id: val
+_(val).must_rematch id: val
+end
+```
+
+The stored key will include the `ID: L<num> [<id>] <SHA1>`.
 ## Suggestions
 
 *   **Check the stores:** If you are unsure about the output, check the readable `*.yaml` files. Keys starting with `L<num>` make it easy to find the corresponding test case at the line indicated.

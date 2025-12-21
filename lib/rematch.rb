@@ -36,8 +36,8 @@ class Rematch
   end
 
   # Retrieve the stored value for the current assertion if its key is known; store the value otherwise
-  def rematch(value, overwrite: nil)
-    key = assertion_key
+  def rematch(value, overwrite: nil, id: nil)
+    key = assertion_key(id)
     @store.transaction do |s|
       if s.root?(key) && !overwrite       # there is the key and not overwrite
         s[key]                            # return it
@@ -51,8 +51,7 @@ class Rematch
   end
 
   def store_warning(key)
-    warn "Rematch stored new value for: #{key.inspect}\n#{@store.path}\n\n" \
-    unless Rematch.skip_warning
+    warn "Rematch stored new value for: #{key.inspect}\n#{@store.path}\n\n" unless Rematch.skip_warning
   end
 
   protected
@@ -64,10 +63,10 @@ class Rematch
 
   private
 
-  # Generate the key based on the line number and test ID
-  def assertion_key
+  # Generate the key based on the line number, optional id, and test ID
+  def assertion_key(id)
     line = caller_locations.find { |l| l.path == @path }&.lineno
-    "L#{line} #{@id}"
+    %(L#{line}#{" [#{id}]" if id} #{@id})
   end
 
   # Ensure the keys are sorted by the order of the tests in the file
@@ -88,7 +87,7 @@ class Rematch
     end
     # Extract all data
     data = store.roots.to_h { |key| [key, store.delete(key)] }
-    # Re-add data in the correct order, filter orphans and sort
+    # Re-add data in the correct order, filter orphans, and sort
     data.select { |key, _| valid_ids.include?(key.split.last) }
         .sort_by { |key, _| key[/L(\d+)/, 1].to_i }
         .each { |key, value| store[key] = value }
