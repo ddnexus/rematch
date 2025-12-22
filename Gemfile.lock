@@ -25,6 +25,7 @@ GEM
     logger (1.7.0)
     minitest (6.0.0)
       prism (~> 1.5)
+    minitest-mock (5.27.0)
     minitest-reporters (1.7.1)
       ansi
       builder
@@ -102,6 +103,7 @@ PLATFORMS
 DEPENDENCIES
   irb
   minitest
+  minitest-mock
   minitest-reporters
   minitest-unordered
   mutex_m
