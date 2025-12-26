@@ -127,20 +127,23 @@ When your code changes, you can update the store without editing test files:
     ```sh
     rake test TESTOPTS=--rematch-rebuild
     ```
-    :warning: **WARNING:** Only use this when you are sure the new output is correct.
+    > [!WARNING]
+    > Only use this when you are sure the new output is correct: it will be stored!
 
 2.  **Manual deletion:** Delete the specific `*.yaml` store file and re-run the test.
 
 3.  **Selective update:** Temporarily replace the check with its `store_` counterpart:
-  *   `assert_rematch` &rarr; `store_assert_rematch`
-  *   `must_rematch` &rarr; `store_must_rematch`
-  *   `to_rematch` &rarr; `store_to_rematch`
+    - `assert_rematch` &rarr; `store_assert_rematch`
+    - `must_rematch` &rarr; `store_must_rematch`
+    - `to_rematch` &rarr; `store_to_rematch`
 
-    This stores the new value and fails the test (to prevent committing the `store_` call). Revert to the original method to pass the test.
+    > [!WARNING]
+    > This stores the new value and fails the test (to prevent committing the `store_` call).
+    > Revert to the original method to pass the test.
 
 ### Assertions and Expectations
 
-Rematch wraps `assert_equal` (or `assert_nil`) by default. You can also specify a different equality assertion (e.g., `assert_equal_unordered`).
+By default, Rematch wraps `assert_equal` _(or `assert_nil`, depending on the value)_. You can also specify a different equality assertion (e.g., `assert_equal_unordered`).
 
 ```ruby
 # Standard usage
@@ -159,18 +162,28 @@ _(actual).must_rematch 'message'
 
 **Note:** The custom assertion must be a symbol (e.g., `:assert_something`). The order of arguments (assertion symbol vs message) is flexible.
 
-### Parameterized Tests (Loops)
+### Store Format
 
-Since Rematch uses line numbers to generate keys, assertions inside loops or blocks need a unique identifier to avoid collisions. Use the id: option:
+Rematch stores values in a standard YAML file named after your test file (e.g., `test_file.rb.yaml`). The keys are designed to be human-readable, allowing you to easily correlate stored values with your source code:
 
-```ruby
-[:alpha, :beta].each do |val|
-assert_rematch val, id: val
-_(val).must_rematch id: val
-end
+*   **Line Matching:** Keys start with `L<num>` corresponding to the line number of the assertion in your test file (e.g., `L10`).
+*   **Multiple Hits:** If a single assertion line is executed multiple times (e.g., inside a loop), Rematch automatically appends a counter to the key (e.g., `L15`, `L15.2`, `L15.3`).
+*   **Labels:** You can make keys self-documenting by passing the `label:` option, which appears in brackets within the key.
+
+**Example:**
+
+```yaml
+---
+# Simple assertion at line 10
+L10 8a93...: "simple value"
+
+# Loop executing line 15 twice
+L15 2b4c...: "iteration 1"
+L15.2 2b4c...: "iteration 2"
+
+# Assertion at line 20 using `label: 'custom_id'`
+L20 [custom_id] 9d1e...: "labeled value"
 ```
-
-The stored key will include the `ID: L<num> [<id>] <SHA1>`.
 ## Suggestions
 
 *   **Check the stores:** If you are unsure about the output, check the readable `*.yaml` files. Keys starting with `L<num>` make it easy to find the corresponding test case at the line indicated.

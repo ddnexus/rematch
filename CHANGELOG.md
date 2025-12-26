@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## Version 5.0.0
+
+- Update gems
+- Deep refactoring:
+  - Store files are always up-to-date reflecting the source
+  - Human-readable keys, allowing the user to easily correlate stored values with test code by line number and custom labels
+  - Rematch reads and (if needed) writes the store only once per file run
+  - Better docs, better tests
+
 ## Version 4.1.0
 
 - Added the id option for using rematch in loops

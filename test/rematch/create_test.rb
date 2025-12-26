@@ -7,10 +7,11 @@ describe 'rematch/create' do
   it 'creates the store and the entry' do
     File.delete(store_path) if File.file?(store_path)
     expect('a new value').to_rematch
+    instance_variable_get(:@rematch).save
     value(store_path).path_must_exist
     _(File.read(store_path)).must_equal <<~STORE
       ---
-      L9 770340a3ba63a77e0b0cc28e2ab660f04267ab60: a new value
+      L9 49046ff08f83f4ee19cae5c095d4c2e9febd48db: a new value
     STORE
   end
 end

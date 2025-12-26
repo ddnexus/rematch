@@ -34,10 +34,12 @@ describe 'rematch/equality' do
     expect(array).to_rematch :assert_equal_unordered
     assert_rematch array, :assert_equal_unordered
   end
-  it 'rematches empty value' do
-    expect("").to_rematch
-  end
+
   it 'rematches :assert_nil' do
     expect(nil).to_rematch
+  end
+
+  it 'rematches empty value' do
+    expect("").to_rematch
   end
 end

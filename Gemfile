@@ -11,6 +11,7 @@ gem 'reline'
 
 group :test do
   gem 'minitest'
+  gem 'minitest-mock'
   gem 'minitest-reporters'
   gem 'minitest-unordered'
   gem 'rubocop'
