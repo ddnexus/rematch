@@ -11,6 +11,7 @@ AllCops:
   Exclude:
     # '___' prefixed dirs are excluded
     - ___*/**/*
+    - vendor/**/*
 
 Minitest/EmptyLineBeforeAssertionMethods:
   Enabled: false
