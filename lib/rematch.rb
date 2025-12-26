@@ -7,7 +7,7 @@ require_relative 'rematch/store'
 
 # Handles the key/value store for each test file
 class Rematch
-  VERSION = '4.1.0'
+  VERSION = '5.0.0'
   CONFIG  = { ext: '.yaml' }  # rubocop:disable Style/MutableConstant
 
   @rebuild      = false
