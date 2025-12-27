@@ -19,12 +19,24 @@ class Rematch
       @index.each_value { |keys| keys.sort_by! { |k| order_by_lineno(k) } }
     end
 
-    def pull(id)    = @index[id].shift      # Remove and return the first key from the index id
-    def delete(key) = @entries.delete(key)
-    def [](key)     = @entries[key]
+    def keys(id) = @index[id]
+
+    def delete(key)
+      value = @entries.delete(key) # Capture the value
+      @index[id_from(key)].delete(key)
+      value # Return the value
+    end
+
+    def [](key) = @entries[key]
 
     def []=(key, value)
       @entries[key] = value
+      id = id_from(key)
+      # Keep index in sync and sorted
+      return if @index[id].include?(key)
+
+      @index[id] << key
+      @index[id].sort_by! { |k| order_by_lineno(k) }
     end
 
     def save
@@ -38,6 +50,8 @@ class Rematch
     end
 
     private
+
+    def id_from(key) = key.split.last
 
     # Order by L<num> and .<count> suffix
     def order_by_lineno(key) = [key[/L(\d+)/, 1].to_i, key[/L\d+\.(\d+)/, 1].to_i]

@@ -184,6 +184,32 @@ L15.2 2b4c...: "iteration 2"
 # Assertion at line 20 using `label: 'custom_id'`
 L20 [custom_id] 9d1e...: "labeled value"
 ```
+Here is a concise update for the documentation regarding labels and shared code:
+
+### Shared Assertions & Helpers
+
+Rematch identifies entries by their **Source Line** and **Code Content**. If you define an assertion in a helper method and call it from multiple tests, Rematch sees them all as the "same line," causing collisions where Test B reads the value stored for Test A.
+
+To fix this, pass a unique `label:` to the assertion to disambiguate the context:
+
+```ruby
+# Helper used by multiple tests
+def check_workflow(user, label_id)
+  # Pass the label so Rematch knows which test owns this value
+  expect(user.workflow).to_rematch label: label_id
+end
+
+it 'checks admin' do
+  check_workflow(admin, 'admin_case') # Stored as: L10 [admin_case] ...
+end
+
+it 'checks guest' do
+  check_workflow(guest, 'guest_case') # Stored as: L10 [guest_case] ...
+end
+```
+
+> **Note:** You do **not** need labels for simple loops inside a single test. Rematch automatically handles multiple executions of the same line by appending a counter (e.g., `L15`, `L15.2`, `L15.3`). Labels are only required when the **same source line** is executed by **different tests**.
+
 ## Suggestions
 
 *   **Check the stores:** If you are unsure about the output, check the readable `*.yaml` files. Keys starting with `L<num>` make it easy to find the corresponding test case at the line indicated.

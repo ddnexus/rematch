@@ -44,25 +44,26 @@ class Rematch
   end
 
   def initialize(test)
-    @path   = test.method(test.name).source_location.first
-    @env    = self.class.environment(@path)
-    @counts = Hash.new(0) # Track rematch counts per line
+    @path     = test.method(test.name).source_location.first
+    @env      = self.class.environment(@path)
+    @counts   = Hash.new(0) # Track rematch counts per line
+    @consumed = Hash.new { |h, k| h[k] = Set.new } # Track consumed key indices per ID
   end
 
   # Retrieves the stored value for the current assertion, updating the store if the key is new or moved.
   def rematch(value, overwrite: nil, label: nil)
     lineno = caller_locations.find { |l| l.path == @path }&.lineno
     ids    = @env[:source].index[lineno]
-    raise "Rematch Error: No code detected at #{@path}:#{lineno}. Please check syntax." if ids.empty? # never happen
+    raise "Rematch Error: No code detected at #{@path}:#{lineno}. Please check the syntax." if ids.empty?
 
     count   = (@counts[lineno] += 1)
     id      = ids[(count - 1) % ids.size]
     new_key = %(L#{lineno}#{".#{count}" if count > 1}#{" [#{label}]" if label} #{id})
     store   = @env[:store]
-    old_key = store.pull(id)
+    old_key = search_key(id, label)
     if old_key && old_key != new_key  # Reconcile Move first to ensure clean state
       store[new_key] = store.delete(old_key)
-      old_key        = new_key   # Normalize so we only check the verwrite logic below
+      old_key        = new_key        # Normalize so we only check the overwrite logic below
     end
     case
     when !old_key
@@ -76,4 +77,22 @@ class Rematch
   end
 
   def save = @env[:store].save
+
+  private
+
+  # Find the next available key for this ID that hasn't been consumed by this test instance.
+  def search_key(id, label)
+    keys = @env[:store].keys(id)
+    return unless keys
+
+    match_index = keys.find_index.with_index do |key, idx| # Find first non-consumed key
+      next if @consumed[id].include?(idx)
+
+      !label || key.include?("[#{label}]")                 # Respects labels if provided.
+    end
+    return unless match_index
+
+    @consumed[id].add(match_index)
+    keys[match_index]
+  end
 end

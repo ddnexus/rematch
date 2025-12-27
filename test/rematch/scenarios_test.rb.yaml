@@ -1,0 +1,7 @@
+---
+L11 [loop_1] 7ae856bcb5f9ccbd9eaf9b218c9887f79fc99d5f: a
+L11.2 [loop_1] 7ae856bcb5f9ccbd9eaf9b218c9887f79fc99d5f: b
+L17 [just_checking] 21a6d1f6186c0c5503f1d0741f321ce2dd920dac: single_value
+L23 17f50ac8402316fd437fabd5ab67bba7df022a0a: simple_ext
+L29 bd49d78213486390001a8cdd3b27782049e3f1d1: ext_1
+L29.2 bd49d78213486390001a8cdd3b27782049e3f1d1: ext_2
