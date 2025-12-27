@@ -12,9 +12,11 @@ class Rematch
                          must_rematch to_rematch store_must_rematch store_to_rematch].freeze
     IGNORED_TOKENS  = (REMATCH_METHODS + %w[expect value _]).freeze
     DOT_TOKENS      = ['.', '&.'].freeze
+    SKIP_TYPES      = %i[on_comment on_sp on_nl on_ignored_nl].freeze
 
     def initialize(source)
       @index = Hash.new { |h, k| h[k] = [] } # { lineno => [id1, id2, ...] }
+
       source.lines.each_with_index do |line, i|
         lineno = i + 1
         tokens = tokenize(line)
@@ -27,7 +29,8 @@ class Rematch
     private
 
     def tokenize(line)
-      raw_tokens = Ripper.lex(line).reject { |t| t[1] == :on_comment || t[1] =~ /sp|nl/ }
+      raw_tokens = Ripper.lex(line).reject { |t| SKIP_TYPES.include?(t[1]) }
+
       [].tap do |tokens|
         raw_tokens.each_with_index do |t, i|
           token = t[2]

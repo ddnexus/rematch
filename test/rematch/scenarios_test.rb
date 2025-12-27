@@ -28,4 +28,27 @@ describe 'rematch/scenarios' do
     # Rematch should see L27 called twice and create L27, L27.2
     check_external_loop
   end
+
+  it 'handles loops with line number changes (reconciliation)' do
+    values   = %w[move_1 move_2]
+    run_loop = lambda do
+      values.each do |val|
+        assert_rematch val, label: 'move_loop'
+      end
+    end
+
+    # Setup store with moved keys to simulate code movement
+    path   = __FILE__
+    env    = Rematch.environment(path)
+    lineno = File.readlines(path).index { |l| l.include?("label: 'move_loop'") } + 1
+    id     = env[:source].index[lineno].first
+    store  = env[:store]
+
+    # Seed fake old keys and clear current ones to force reconciliation
+    store["L9999 [move_loop] #{id}"]   = 'move_1'
+    store["L9999.2 [move_loop] #{id}"] = 'move_2'
+    store.keys(id).dup.each { |k| store.delete(k) if k.start_with?("L#{lineno}") }
+
+    run_loop.call
+  end
 end

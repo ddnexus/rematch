@@ -10,11 +10,17 @@ class Rematch
     def initialize(path, source_ids)
       @path    = path
       @entries = (File.exist?(path) && YAML.unsafe_load_file(path)) || {}
-      # Prune dead keys (id not present ANYWHERE in the current source)
-      @entries.select! { |key, _| source_ids.include?(key.split.last) }
-      # Build Index: id => [key1, key2...] (FIFO queue for duplicates)
-      @index = Hash.new { |h, k| h[k] = [] }
-      @entries.each_key { |key| @index[key.split.last] << key }
+      @index   = Hash.new { |h, k| h[k] = [] }
+
+      # Prune dead keys and build index
+      @entries.keep_if do |key, _|
+        id = id_from(key)
+        if source_ids.include?(id)
+          @index[id] << key
+          true
+        end
+      end
+
       # Order the index queues by lineno to ensure FIFO claiming
       @index.each_value { |keys| keys.sort_by! { |k| order_by_lineno(k) } }
     end
@@ -54,6 +60,9 @@ class Rematch
     def id_from(key) = key.split.last
 
     # Order by L<num> and .<count> suffix
-    def order_by_lineno(key) = [key[/L(\d+)/, 1].to_i, key[/L\d+\.(\d+)/, 1].to_i]
+    def order_by_lineno(key)
+      match = key.match(/L(\d+)(?:\.(\d+))?/)
+      [match[1].to_i, match[2].to_i]
+    end
   end
 end
