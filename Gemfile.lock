@@ -2,8 +2,6 @@ PATH
   remote: .
   specs:
     rematch (5.0.0)
-      logger
-      pstore
 
 GEM
   remote: https://rubygems.org/
@@ -22,7 +20,6 @@ GEM
     json (2.18.0)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
-    logger (1.7.0)
     minitest (6.0.0)
       prism (~> 1.5)
     minitest-mock (5.27.0)
@@ -41,7 +38,6 @@ GEM
       prettyprint
     prettyprint (0.2.0)
     prism (1.7.0)
-    pstore (0.2.0)
     psych (5.3.1)
       date
       stringio

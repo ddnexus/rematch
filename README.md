@@ -166,31 +166,33 @@ _(actual).must_rematch 'message'
 
 Rematch stores values in a standard YAML file named after your test file (e.g., `test_file.rb.yaml`). The keys are designed to be human-readable, allowing you to easily correlate stored values with your source code:
 
-*   **Line Matching:** Keys start with `L<num>` corresponding to the line number of the assertion in your test file (e.g., `L10`).
-*   **Multiple Hits:** If a single assertion line is executed multiple times (e.g., inside a loop), Rematch automatically appends a counter to the key (e.g., `L15`, `L15.2`, `L15.3`).
-*   **Labels:** You can make keys self-documenting by passing the `label:` option, which appears in brackets within the key.
+- **Line Matching:** Keys start with `L<num>` corresponding to the line number of the assertion in your test file (e.g., `L10`).
+- **Multiple Hits:** If a single assertion line is executed multiple times (e.g., inside a loop), Rematch stores them as a chronological list under the same key.
+- **Labels:** You can make entries self-documenting by passing the `label:` option, which appears as the key for the value. The label **must** also be passed to [Shared Assertions](#shared-assertions)
 
 **Example:**
 
 ```yaml
 ---
 # Simple assertion at line 10
-L10 8a93...: "simple value"
+L10 8a93...:
+- rematch_value: "simple value"
 
 # Loop executing line 15 twice
-L15 2b4c...: "iteration 1"
-L15.2 2b4c...: "iteration 2"
+L15 2b4c...:
+- rematch_value: "iteration 1"
+- rematch_value: "iteration 2"
 
 # Assertion at line 20 using `label: 'custom_id'`
-L20 [custom_id] 9d1e...: "labeled value"
+L20 9d1e...:
+- custom_id: "labeled value"
 ```
-Here is a concise update for the documentation regarding labels and shared code:
 
-### Shared Assertions & Helpers
+### Shared Assertions
 
-Rematch identifies entries by their **Source Line** and **Code Content**. If you define an assertion in a helper method and call it from multiple tests, Rematch sees them all as the "same line," causing collisions where Test B reads the value stored for Test A.
+If you define an assertion in a method and call it from multiple tests, the order of the calls will likely be changed by minitest at each run, and some of the tests will likely fail.
 
-To fix this, pass a unique `label:` to the assertion to disambiguate the context:
+To fix this, pass a unique `label:` to the assertion to disambiguate the likely mismatch.
 
 ```ruby
 # Helper used by multiple tests
@@ -200,15 +202,13 @@ def check_workflow(user, label_id)
 end
 
 it 'checks admin' do
-  check_workflow(admin, 'admin_case') # Stored as: L10 [admin_case] ...
+  check_workflow(admin, 'admin_case')
 end
 
 it 'checks guest' do
-  check_workflow(guest, 'guest_case') # Stored as: L10 [guest_case] ...
+  check_workflow(guest, 'guest_case')
 end
 ```
-
-> **Note:** You do **not** need labels for simple loops inside a single test. Rematch automatically handles multiple executions of the same line by appending a counter (e.g., `L15`, `L15.2`, `L15.3`). Labels are only required when the **same source line** is executed by **different tests**.
 
 ## Suggestions
 

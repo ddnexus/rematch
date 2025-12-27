@@ -20,7 +20,5 @@ Gem::Specification.new do |s|
                     'homepage_uri'          => 'https://github.com/ddnexus/rematch',
                     'bug_tracker_uri'       => 'https://github.com/ddnexus/rematch/issues',
                     'changelog_uri'         => 'https://github.com/ddnexus/rematch/blob/master/CHANGELOG.md' }
-  s.add_dependency 'logger'
-  s.add_dependency 'pstore'
   s.required_ruby_version = '> 3.2' # Ruby EOL
 end
