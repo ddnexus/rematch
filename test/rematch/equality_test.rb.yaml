@@ -1,16 +1,20 @@
 ---
-L18 0cda51ef99fe505a0573a49f6ffe8cf44961afe5: MIXED_case
-L19 9f0526575965e2907f63946386da4c2a3a930df2: MIXED_case
-L24 05be2af05a29f9f515976c5bd2237afa3a6b560a: a value
-L32 212d5256a5d7465500e93de49903f1580c0e46eb: &1
-- 1
-- 2
-- 3
-L33 212d5256a5d7465500e93de49903f1580c0e46eb: *1
+L18 0cda51ef99fe505a0573a49f6ffe8cf44961afe5:
+- rematch_value: MIXED_case
+L19 9f0526575965e2907f63946386da4c2a3a930df2:
+- rematch_value: MIXED_case
+L24 05be2af05a29f9f515976c5bd2237afa3a6b560a:
+- rematch_value: a value
 L34 212d5256a5d7465500e93de49903f1580c0e46eb:
-- 1
-- 2
-- 3
-L35 4c339e220d73ff928217139b28c599b164d09063: *1
+- rematch_value: &1
+  - 1
+  - 2
+  - 3
+- rematch_value: *1
+- rematch_value: *1
+L35 4c339e220d73ff928217139b28c599b164d09063:
+- rematch_value: *1
 L39 c713dcb637a4b819976a88e6c04379933b60864b:
-L43 76e263dae33692e0795a92cbca86c15c7d00bb40: ''
+- rematch_value:
+L43 76e263dae33692e0795a92cbca86c15c7d00bb40:
+- rematch_value: ''

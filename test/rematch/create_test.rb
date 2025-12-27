@@ -11,7 +11,8 @@ describe 'rematch/create' do
     value(store_path).path_must_exist
     _(File.read(store_path)).must_equal <<~STORE
       ---
-      L9 c13516d366b1ca97c59de35d611ba3158a0ab11b: a new value
+      L9 c13516d366b1ca97c59de35d611ba3158a0ab11b:
+      - rematch_value: a new value
     STORE
   end
 end

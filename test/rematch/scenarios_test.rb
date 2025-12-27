@@ -45,9 +45,15 @@ describe 'rematch/scenarios' do
     store  = env[:store]
 
     # Seed fake old keys and clear current ones to force reconciliation
-    store["L9999 [move_loop] #{id}"]   = 'move_1'
-    store["L9999.2 [move_loop] #{id}"] = 'move_2'
-    store.keys(id).dup.each { |k| store.delete(k) if k.start_with?("L#{lineno}") }
+    # We access internals because the public API no longer allows setting arbitrary keys
+    entries = store.instance_variable_get(:@entries)
+    index   = store.instance_variable_get(:@index)
+
+    entries["L9999 #{id}"] = [{ 'move_loop' => 'move_1' }, { 'move_loop' => 'move_2' }]
+    index[id] = "L9999 #{id}"
+
+    # Ensure the current line key doesn't exist
+    entries.delete("L#{lineno} #{id}")
 
     run_loop.call
   end
