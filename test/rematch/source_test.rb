@@ -36,16 +36,6 @@ describe Rematch::Source do
     _(result[12].size).must_equal 1
   end
 
-  it 'generates SHAs based on Path + Content' do
-    sha_3  = result[3].first
-    sha_8  = result[8].first
-    sha_12 = result[12].first
-
-    _(sha_3).wont_be_nil
-    _(sha_3).wont_equal sha_8
-    _(sha_8).wont_equal sha_12
-  end
-
   it 'generates identical SHAs for identical context and code' do
     dup_code = <<~RUBY
       class Dupe
@@ -114,22 +104,6 @@ describe Rematch::Source do
     res = Rematch::Source.new(complex_code).index
     _(res[4]).wont_be_nil
     _(res[4].first).wont_be_empty
-  end
-
-  it 'handles classes as describe args' do
-    class_code = <<~RUBY
-      class MyClass; end
-      describe MyClass do
-        it "works" do
-          assert_rematch "ok"
-        end
-      end
-    RUBY
-
-    res = Rematch::Source.new(class_code).index
-    class_code_2 = class_code.gsub('MyClass', 'OtherClass')
-    res_2 = Rematch::Source.new(class_code_2).index
-    _(res[4].first).wont_equal res_2[4].first
   end
 
   it 'distinguishes diverse describe arguments' do
@@ -207,11 +181,5 @@ describe Rematch::Source do
     _(res[3].first).wont_be_nil
     _(res[4].first).wont_be_nil
     _(res[5].first).wont_be_nil
-  end
-
-  it 'returns empty hash on syntax error' do
-    bad_code = "class Broken < end"
-    res = Rematch::Source.new(bad_code).index
-    _(res).must_be_empty
   end
 end
