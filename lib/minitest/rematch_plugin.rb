@@ -29,10 +29,10 @@ module Minitest
     def before_teardown
       super
       @rematch&.save
-      if @rematch&.forced&.any? && failures.empty?
-        locations = @rematch.forced.uniq.map { |l| "  #{l}" }.join("\n")
-        raise Minitest::Assertion, "[rematch] the value has been stored: remove the \"!\" suffix to pass the test\n#{locations}"
-      end
+      return unless @rematch&.forced&.any? && failures.empty?
+
+      locations = @rematch.forced.uniq.map { |l| "  #{l}" }.join("\n")
+      raise Minitest::Assertion, "[rematch] the value has been stored: remove the \"!\" suffix to pass the test\n#{locations}"
     end
   end
 
@@ -50,7 +50,7 @@ module Minitest
     end
 
     # Temporarily used to store the actual value, useful for reconciliation of expected changed values
-    def assert_rematch!(actual, *args)
+    def assert_rematch!(actual, *)
       @rematch.rematch(actual, force: true)
     end
   end

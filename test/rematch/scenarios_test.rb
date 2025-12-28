@@ -37,7 +37,7 @@ describe 'rematch/scenarios' do
     entries = store.instance_variable_get(:@entries)
     index   = store.instance_variable_get(:@index)
 
-    entries["L9999 #{id}"] = ['move_1', 'move_2']
+    entries["L9999 #{id}"] = %w[move_1 move_2]
     index[id] = "L9999 #{id}"
 
     # Ensure the current line key doesn't exist

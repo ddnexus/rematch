@@ -34,10 +34,7 @@ class Rematch
       line    = @source_index.find { |_, shas| shas.include?(id) }&.first
       new_key = "L#{line} #{id}"
       old_key = @index[id]
-      if old_key && old_key != new_key
-        @entries.delete(old_key)
-      end
-
+      @entries.delete(old_key) if old_key && old_key != new_key
       @index[id]        = new_key
       @entries[new_key] = values
     end

@@ -3,6 +3,7 @@
 require_relative 'rematch/store'
 require_relative 'rematch/source'
 
+# Add description
 class Rematch
   VERSION = '5.0.0'
   CONFIG  = { ext: '.yaml' }.freeze
@@ -17,8 +18,9 @@ class Rematch
 
   def initialize(test)
     @test    = test
-    @file, _ = test.method(test.name).source_location
-    @store   = self.class.stores[@file] ||= begin
+    @file,   = test.method(test.name).source_location
+    @store   = self.class.stores[@file] ||=
+               begin # rubocop:disable Layout/AssignmentIndentation
                  path = "#{@file}#{CONFIG[:ext]}"
                  File.delete(path) if self.class.rebuild && File.exist?(path)
                  Store.new(path, Source.new(File.read(@file)).index)
