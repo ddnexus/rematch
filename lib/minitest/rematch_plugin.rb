@@ -29,6 +29,10 @@ module Minitest
     def before_teardown
       super
       @rematch&.save
+      if @rematch&.forced&.any? && failures.empty?
+        locations = @rematch.forced.uniq.map { |l| "  #{l}" }.join("\n")
+        raise Minitest::Assertion, "[rematch] the value has been stored: remove the \"!\" suffix to pass the test\n#{locations}"
+      end
     end
   end
 
@@ -46,10 +50,8 @@ module Minitest
     end
 
     # Temporarily used to store the actual value, useful for reconciliation of expected changed values
-    def store_assert_rematch(actual, *args)
-      @rematch.rematch(actual, overwrite: true)
-      # Always fail after storing, forcing the restore of the original assertion/expectation
-      raise Minitest::Assertion, '[rematch] the value has been stored: remove the "store_" prefix to pass the test'
+    def assert_rematch!(actual, *args)
+      @rematch.rematch(actual, force: true)
     end
   end
 
@@ -57,7 +59,7 @@ module Minitest
   if (expectation_class = defined?(Spec) && (defined?(Expectation) ? Expectation : Expectations))
     expectation_class.infect_an_assertion :assert_rematch, :must_rematch, :reverse
     expectation_class.alias_method :to_rematch, :must_rematch # to use with expect().to_rematch
-    expectation_class.infect_an_assertion :store_assert_rematch, :store_must_rematch, :reverse
-    expectation_class.alias_method :store_to_rematch, :store_must_rematch
+    expectation_class.infect_an_assertion :assert_rematch!, :must_rematch!, :reverse
+    expectation_class.alias_method :to_rematch!, :must_rematch!
   end
 end

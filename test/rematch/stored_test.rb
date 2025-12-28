@@ -60,13 +60,11 @@ describe 'rematch/stored' do
   end
 
   it 'should force rematch' do
-    error = assert_raises(Minitest::Assertion) do
-      store_assert_rematch('store-rematch (right_value)')
-    end
-    _(error.message).must_equal '[rematch] the value has been stored: remove the "store_" prefix to pass the test'
-    error2 = assert_raises(Minitest::Assertion) do
-      _('store-rematch (right_value)').store_must_rematch
-    end
-    _(error2.message).must_equal '[rematch] the value has been stored: remove the "store_" prefix to pass the test'
+    assert_rematch!('store-rematch (right_value)')
+    _(@rematch.forced).wont_be_empty
+    _('store-rematch (right_value)').must_rematch!
+    _(@rematch.forced).wont_be_empty
+
+    @rematch.forced.clear
   end
 end

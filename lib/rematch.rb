@@ -13,6 +13,8 @@ class Rematch
     def stores = @stores ||= {}
   end
 
+  attr_reader :forced
+
   def initialize(test)
     @test    = test
     @file, _ = test.method(test.name).source_location
@@ -23,9 +25,10 @@ class Rematch
                end
     @session = Hash.new { |h, k| h[k] = [] }
     @counts  = Hash.new(0)
+    @forced  = []
   end
 
-  def rematch(actual, overwrite: false)
+  def rematch(actual, force: false)
     # Identify the assertion line by walking up the stack until we find the test file
     location = caller_locations.find { |l| l.path == @file }
     raise "Could not find assertion in #{@file}" unless location
@@ -35,13 +38,11 @@ class Rematch
 
     # Record value for this session
     @session[sha] << actual
-    index = @counts[sha]
+    index         = @counts[sha]
     @counts[sha] += 1
-
+    @forced << "#{location.path}:#{location.lineno}" if force
     # Determine return value
-    if overwrite || self.class.rebuild
-      return actual
-    end
+    return actual if force || self.class.rebuild
 
     stored = @store.get(sha)
     return stored[index] if stored && index < stored.size

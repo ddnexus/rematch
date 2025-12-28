@@ -10,10 +10,9 @@ end
 describe 'rematch/identical_cases' do
   it 'creates multiple key store' do
     delete_store
-    error = assert_raises(Minitest::Assertion) do
-      store_assert_rematch 'stored_value'
-    end
-    _(error.message).must_equal '[rematch] the value has been stored: remove the "store_" prefix to pass the test'
+    assert_rematch! 'stored_value'
+    _(@rematch.forced).wont_be_empty
+    @rematch.forced.clear
     delete_store
     expect('stored_value').to_rematch
     expect('stored_value').to_rematch
