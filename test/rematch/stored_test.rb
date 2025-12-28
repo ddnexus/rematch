@@ -17,15 +17,6 @@ describe 'rematch/stored' do
     assert_rematch(Time.parse('2021-05-16 12:33:31.101458598 +00:00'))
   end
 
-  it 'rematches using the id option' do
-    # Useful for loops or parameterized tests where the line number is the same
-    %w[a b].each do |char|
-      assert_rematch char, label: "assert_#{char}"
-      _(char).must_rematch label: "must_#{char}"
-      expect(char).to_rematch label: "to_#{char}"
-    end
-  end
-
   it 'accepts all argument combinations' do
     # 1. No extra args
     assert_rematch 'plain'
@@ -42,21 +33,6 @@ describe 'rematch/stored' do
     # 5. Message + Assertion
     assert_rematch 'message first', 'msg', :assert_equal
     _('message first').must_rematch 'msg', :assert_equal
-    # 6. ID only
-    assert_rematch 'id only', label: 'id1'
-    _('id only').must_rematch label: 'id2'
-    # 7. ID + Assertion
-    assert_rematch 'id assertion', :assert_equal, label: 'id3'
-    _('id assertion').must_rematch :assert_equal, label: 'id4'
-    # 8. ID + Message
-    assert_rematch 'id message', 'msg', label: 'id5'
-    _('id message').must_rematch 'msg', label: 'id6'
-    # 9. ID + Assertion + Message
-    assert_rematch 'id all 1', :assert_equal, 'msg', label: 'id7'
-    _('id all 1').must_rematch :assert_equal, 'msg', label: 'id8'
-    # 10. ID + Message + Assertion
-    assert_rematch 'id all 2', 'msg', :assert_equal, label: 'id9'
-    _('id all 2').must_rematch 'msg', :assert_equal, label: 'id10'
     # 11. Proc Message
     assert_rematch 'proc message', proc { 'lazy msg' }
     _('proc message').must_rematch proc { 'lazy msg' }
@@ -78,6 +54,9 @@ describe 'rematch/stored' do
       assert_rematch 'wrong_value'
     end
     _(error2.message).must_equal "Expected: \"right_value\"\n  Actual: \"wrong_value\""
+
+    # Prevent saving the wrong values used for testing failure
+    @rematch.instance_variable_get(:@session).clear
   end
 
   it 'should force rematch' do

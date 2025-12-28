@@ -36,20 +36,18 @@ module Minitest
   module Assertions
     # Main assertion
     def assert_rematch(actual, *args)
-      label = Rematch.extract_label(args)
       assertion, message = args
       assertion, message = message, assertion unless assertion.nil? || assertion.is_a?(Symbol)
       if actual.nil? # use specific assert_nil after deprecation of assert_equal nil
-        assert_nil @rematch.rematch(actual, label:), message
+        assert_nil @rematch.rematch(actual), message
       else # assert that the stored value is the same actual value
-        send assertion || :assert_equal, @rematch.rematch(actual, label:), actual, message
+        send assertion || :assert_equal, @rematch.rematch(actual), actual, message
       end
     end
 
     # Temporarily used to store the actual value, useful for reconciliation of expected changed values
     def store_assert_rematch(actual, *args)
-      label = Rematch.extract_label(args)
-      @rematch.rematch(actual, overwrite: true, label:)
+      @rematch.rematch(actual, overwrite: true)
       # Always fail after storing, forcing the restore of the original assertion/expectation
       raise Minitest::Assertion, '[rematch] the value has been stored: remove the "store_" prefix to pass the test'
     end

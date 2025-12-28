@@ -4,7 +4,7 @@ require_relative '../test_helper'
 
 # ensure there is no store
 def delete_store
-  FileUtils.rm("#{__FILE__}#{Rematch::CONFIG[:ext]}", force: true)
+  FileUtils.rm_f("#{__FILE__}#{Rematch::CONFIG[:ext]}")
 end
 
 describe 'rematch/identical_cases' do

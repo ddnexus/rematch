@@ -1,111 +1,78 @@
 ---
 L8 7e34dbb5a0b3795cb196e64d7df94c8708b8a9a8:
-- rematch_value: stored_value
+- stored_value
 L9 bd80f8145ab85e4618d83e6ddfad8b253baf92ad:
-- rematch_value: stored_value
+- stored_value
 L10 24cfaf1dd7984662178cd8cd3da27b954fd438fc:
-- rematch_value: !ruby/range
-    begin: 5
-    end: 34
-    excl: false
+- !ruby/range
+  begin: 5
+  end: 34
+  excl: false
 L11 858b6e0b9c8c1aef4087d360ae263222eefb2ee9:
-- rematch_value: !ruby/range
-    begin: 5
-    end: 34
-    excl: false
+- !ruby/range
+  begin: 5
+  end: 34
+  excl: false
 L12 752d1703c5aacc569526d94c1cb86e714d741b3d:
-- rematch_value:
-  - 1
+- - 1
   - 4
   - 5
   - 6
 L13 b3898281f953566e379fe4f7d76f9b082bdc8efb:
-- rematch_value:
-  - 1
+- - 1
   - 4
   - 5
   - 6
-L15 1fbac5f7fd00e43a5df48c93b9dd120f3778aeee:
-- rematch_value:
-    :a: 23
-    :b:
-      :c:
-      - a
-      - 5
-- rematch_value:
-    :a: 23
-    :b:
-      :c:
-      - a
-      - 5
-L17 2720e52ec3b4e464134484e0b31f5847b1d30f8c:
-- rematch_value: 2021-05-16 12:33:31.101458598 +00:00
-- rematch_value: 2021-05-16 12:33:31.101458598 +00:00
-L23 c4d3c8c6fb227939021dc4dd984e066cad012953:
-- assert_a: a
-- assert_b: b
-L24 171e1c1ca690a8addf1d30b115777aa49e7134c7:
-- must_a: a
-- must_b: b
-L25 419803f1e8a1fccab5bde6c824b27272a9f430f8:
-- to_a: a
-- to_b: b
-L31 478d905d6f0574574d300751dcbbc42ed3ead78c:
-- rematch_value: plain
-L32 99760f6da696195d9e3436ab5bc457623d2947ee:
-- rematch_value: plain
-L34 bcbfdf11184559563b6ff61c4f5b7144c1d2670a:
-- rematch_value: assertion only
-L35 0f7e74780d39818c821dcdea9b4a3efa8aff54d4:
-- rematch_value: assertion only
-L37 021642c54c67b7f9c9ba62f257b4b53125695ad4:
-- rematch_value: message only
-L38 aa5897289801ca634811835ba94d69b996f9ea57:
-- rematch_value: message only
-L40 82a32c446d9bc2e56be1bdb0c041b19a910ad900:
-- rematch_value: assertion first
-L41 42c96514dcca435f274041471ff2e9beb69197ba:
-- rematch_value: assertion first
-L43 17543f7cf4cccc349a7cdea3f33ddc8db4850cbe:
-- rematch_value: message first
-L44 8de52c0628ce686674c017c5ad37bc4ee3ece816:
-- rematch_value: message first
-L46 655f798a44eaabcaecc91f5e70580a7b320e588e:
-- id1: id only
-L47 2223807ccd66199abc99a2a519cff9ef05150946:
-- id2: id only
-L49 e566d5a33dc01435b50289e376da52d5bfd05290:
-- id3: id assertion
-L50 9e750c2ad94ceb9ecaaf92f41a242fae3e21bf73:
-- id4: id assertion
-L52 d1dd71ae3e1b98dae0d197739095963b32d153a5:
-- id5: id message
-L53 82c85719c1884fe39bf6e95df0aa433d4a04fb2f:
-- id6: id message
-L55 87278c3decd5c8e88909afad72968973979fc23e:
-- id7: id all 1
-L56 7cd1edf4db3072f87d6f31e6620fa97cbdfb3d62:
-- id8: id all 1
-L58 e08df45854afd7e613d2f24a395ccfbc7a5aa5a4:
-- id9: id all 2
-L59 49b416d3ecdc639c128e8b591aabbf6f0e49ce71:
-- id10: id all 2
-L61 488b3f1d121ee4d065d55ed2a38b13b92abbc453:
-- rematch_value: proc message
-L62 92fba891f24eb1ef0556ca1f5ba8997cde811d75:
-- rematch_value: proc message
-L64 821c59fbca5f8d185c9c566c6592c64177a1dbd5:
-- rematch_value: proc msg first
-L65 986bf32a947c74e65096b831aadac172f91b3eff:
-- rematch_value: proc msg first
-L67 64e2fe1aae4311a911d75cc0b661428bba3c45e1:
-- rematch_value: proc msg last
-L68 cc172b07b89f2c60684a7f638a9424ee50b011b1:
-- rematch_value: proc msg last
-L74 64379d55cf58c45520768072e8ec59041869e22c:
-- rematch_value: right_value
-L78 83bb23622ac746b4631f67bbb2d8cf1e81fc47ff:
-- rematch_value: right_value
-L89 d78fda23747c9bb1bed9027e8c815b8b3e221a0e:
-- rematch_value: store-rematch (right_value)
-- rematch_value: store-rematch (right_value)
+L14 1fbac5f7fd00e43a5df48c93b9dd120f3778aeee:
+- :a: 23
+  :b:
+    :c:
+    - a
+    - 5
+- :a: 23
+  :b:
+    :c:
+    - a
+    - 5
+L16 2720e52ec3b4e464134484e0b31f5847b1d30f8c:
+- 2021-05-16 12:33:31.101458598 +00:00
+- 2021-05-16 12:33:31.101458598 +00:00
+L22 478d905d6f0574574d300751dcbbc42ed3ead78c:
+- plain
+L23 99760f6da696195d9e3436ab5bc457623d2947ee:
+- plain
+L25 bcbfdf11184559563b6ff61c4f5b7144c1d2670a:
+- assertion only
+L26 0f7e74780d39818c821dcdea9b4a3efa8aff54d4:
+- assertion only
+L28 021642c54c67b7f9c9ba62f257b4b53125695ad4:
+- message only
+L29 aa5897289801ca634811835ba94d69b996f9ea57:
+- message only
+L31 82a32c446d9bc2e56be1bdb0c041b19a910ad900:
+- assertion first
+L32 42c96514dcca435f274041471ff2e9beb69197ba:
+- assertion first
+L34 17543f7cf4cccc349a7cdea3f33ddc8db4850cbe:
+- message first
+L35 8de52c0628ce686674c017c5ad37bc4ee3ece816:
+- message first
+L37 488b3f1d121ee4d065d55ed2a38b13b92abbc453:
+- proc message
+L38 92fba891f24eb1ef0556ca1f5ba8997cde811d75:
+- proc message
+L40 821c59fbca5f8d185c9c566c6592c64177a1dbd5:
+- proc msg first
+L41 986bf32a947c74e65096b831aadac172f91b3eff:
+- proc msg first
+L43 64e2fe1aae4311a911d75cc0b661428bba3c45e1:
+- proc msg last
+L44 cc172b07b89f2c60684a7f638a9424ee50b011b1:
+- proc msg last
+L50 64379d55cf58c45520768072e8ec59041869e22c:
+- right_value
+L54 83bb23622ac746b4631f67bbb2d8cf1e81fc47ff:
+- right_value
+L64 d78fda23747c9bb1bed9027e8c815b8b3e221a0e:
+- store-rematch (right_value)
+- store-rematch (right_value)
