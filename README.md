@@ -1,4 +1,8 @@
-# Rematch
+# Rematch [DEPRECATED]
+
+> [!CAUTION]
+> **This gem has been deprecated in favor of [minitest-holdify](https://github.com/ddnexus/holdify).**
+> Please migrate to the new gem for future updates and support.
 
 [![Gem Version](https://img.shields.io/gem/v/rematch.svg?label=rematch&colorA=99004d&colorB=cc0066)](https://rubygems.org/gems/rematch)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/ddnexus/rematch/rematch-ci.yml?branch=master)](https://github.com/ddnexus/rematch/actions/workflows/rematch-ci.yml?query=branch%3Amaster)</span> <span>

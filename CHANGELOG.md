@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 5.0.1
+
+- Deprecated
+
 ## Version 5.0.0
 
 - Update gems

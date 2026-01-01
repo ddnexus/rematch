@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/ddnexus/rematch'
   s.license     = 'MIT'
   s.files       = Dir['lib/**/*.rb'] + ['LICENSE.txt']
+  s.post_install_message = 'The "rematch" gem is deprecated and will no longer be maintained. ' \
+                           'Please switch to "minitest-holdify" (https://github.com/ddnexus/holdify).'
   s.metadata    = { 'rubygems_mfa_required' => 'true',
                     'homepage_uri'          => 'https://github.com/ddnexus/rematch',
                     'bug_tracker_uri'       => 'https://github.com/ddnexus/rematch/issues',
