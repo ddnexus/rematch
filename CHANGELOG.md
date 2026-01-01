@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 5.0.2
+
+- Add deprecated info in both summary and description for rubygems.org
+
 ## Version 5.0.1
 
 - Deprecated
